@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Break Room — Pornpawee Manyuen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Syne:wght@400;500;700;800&family=Syne+Mono&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { font-size:16px; scroll-behavior:smooth; }
+
+:root {
+  --bg:     #f0ede6;
+  --ink:    #0f0e0b;
+  --muted:  #7a7570;
+  --line:   #d4d0c8;
+  --accent: #c8501a;
+  --white:  #faf9f6;
+  --serif:  'Instrument Serif', Georgia, serif;
+  --sans:   'Syne', sans-serif;
+  --mono:   'Syne Mono', monospace;
+}
+
+body { background:var(--bg); color:var(--ink); font-family:var(--sans); cursor:none; overflow-x:hidden; }
+
+/* cursor */
+#cursor { position:fixed; width:10px; height:10px; background:var(--ink); border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:width .25s,height .25s,background .25s,opacity .15s; mix-blend-mode:multiply; }
+#cursor.grow { width:48px; height:48px; background:var(--accent); }
+#cursor.hidden { opacity:0; }
+
+/* nav */
+nav { position:fixed; top:0; left:0; right:0; z-index:500; display:flex; justify-content:space-between; align-items:center; padding:28px 48px; mix-blend-mode:multiply; }
+.nav-logo { font-family:var(--mono); font-size:13px; color:var(--ink); text-decoration:none; letter-spacing:.04em; }
+.nav-links { display:flex; gap:36px; list-style:none; }
+.nav-links a { font-family:var(--sans); font-size:12px; font-weight:500; letter-spacing:.12em; text-transform:uppercase; color:var(--ink); text-decoration:none; opacity:.5; transition:opacity .2s; }
+.nav-links a:hover { opacity:1; }
+
+/* ── Hero ── */
+.case-hero {
+  min-height: 90vh;
+  padding: 160px 48px 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--line);
+}
+.case-hero::before {
+  content:'';
+  position:absolute; inset:0;
+  background: linear-gradient(160deg, #f4e8d8 0%, var(--bg) 60%);
+  pointer-events:none;
+}
+.case-eyebrow {
+  font-family:var(--mono); font-size:12px; color:var(--muted);
+  letter-spacing:.12em; text-transform:uppercase;
+  margin-bottom:24px; position:relative; z-index:1;
+  display:flex; align-items:center; gap:16px;
+}
+.case-eyebrow a { color:var(--muted); text-decoration:none; transition:color .2s; }
+.case-eyebrow a:hover { color:var(--accent); }
+.case-eyebrow-sep { color:var(--line); }
+
+.case-title {
+  font-family:var(--serif); font-size:clamp(64px,10vw,140px);
+  font-weight:400; line-height:.9; letter-spacing:-.03em;
+  color:var(--ink); margin-bottom:48px; position:relative; z-index:1;
+}
+.case-title em { font-style:italic; color:var(--accent); }
+
+.case-meta {
+  display:grid; grid-template-columns:repeat(5,auto) 1fr;
+  gap:0; border-top:1px solid var(--line);
+  padding-top:28px; position:relative; z-index:1;
+}
+.meta-item {
+  padding:0 32px 0 0;
+  border-right:1px solid var(--line);
+  margin-right:32px;
+}
+.meta-item:last-of-type { border-right:none; }
+.meta-label { font-family:var(--mono); font-size:10px; color:var(--muted); letter-spacing:.1em; text-transform:uppercase; margin-bottom:6px; }
+.meta-val { font-family:var(--sans); font-size:13px; font-weight:500; color:var(--ink); }
+
+.case-cta {
+  display:inline-flex; align-items:center; gap:10px;
+  font-family:var(--sans); font-size:12px; font-weight:500;
+  letter-spacing:.1em; text-transform:uppercase;
+  color:var(--white); background:var(--ink);
+  text-decoration:none; padding:13px 24px;
+  transition:background .2s;
+  align-self:flex-end; justify-self:end;
+  grid-column:-1;
+}
+.case-cta:hover { background:var(--accent); }
+
+/* ── Body layout ── */
+.case-body { max-width:1200px; margin:0 auto; padding:0 48px; }
+
+/* section */
+.case-section { padding:80px 0; border-bottom:1px solid var(--line); }
+.case-section:last-child { border-bottom:none; }
+
+.section-label {
+  font-family:var(--mono); font-size:11px; letter-spacing:.15em;
+  text-transform:uppercase; color:var(--muted);
+  margin-bottom:40px; display:flex; align-items:center; gap:16px;
+}
+.section-label::before { content:''; display:inline-block; width:24px; height:1px; background:var(--muted); }
+.section-label .num { color:var(--accent); }
+
+.section-heading {
+  font-family:var(--serif); font-size:clamp(32px,4vw,52px);
+  font-weight:400; line-height:1.1; letter-spacing:-.02em;
+  color:var(--ink); margin-bottom:32px;
+}
+.section-heading em { font-style:italic; }
+
+.body-text {
+  font-size:15px; line-height:1.85; color:var(--muted);
+  max-width:680px; margin-bottom:20px;
+}
+.body-text strong { color:var(--ink); font-weight:500; }
+.body-text em { color:var(--accent); font-style:normal; }
+
+/* two-col layout */
+.two-col { display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:start; }
+.three-col { display:grid; grid-template-columns:1fr 1fr 1fr; gap:32px; }
+
+/* cards */
+.card {
+  background:var(--white);
+  border:1px solid var(--line);
+  padding:28px;
+}
+.card-label { font-family:var(--mono); font-size:10px; color:var(--muted); letter-spacing:.1em; text-transform:uppercase; margin-bottom:12px; }
+.card-title { font-family:var(--serif); font-size:22px; font-weight:400; color:var(--ink); margin-bottom:10px; line-height:1.2; }
+.card-title em { font-style:italic; color:var(--accent); }
+.card-body { font-size:13px; line-height:1.7; color:var(--muted); }
+.card-tag { display:inline-block; font-family:var(--mono); font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); background:rgba(200,80,26,.07); padding:4px 10px; margin-top:14px; }
+
+/* problem cards */
+.problem-grid { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line); border:1px solid var(--line); }
+.problem-cell { background:var(--bg); padding:24px; }
+.problem-cell .x { font-family:var(--sans); font-size:18px; font-weight:700; color:var(--accent); margin-bottom:8px; }
+.problem-cell .p-title { font-family:var(--sans); font-size:14px; font-weight:500; color:var(--ink); margin-bottom:6px; }
+.problem-cell .p-body { font-size:12px; line-height:1.65; color:var(--muted); }
+
+/* pattern cards */
+.pattern-row { display:flex; gap:24px; }
+.pattern-card { flex:1; background:var(--white); border:1px solid var(--line); padding:28px; }
+.pattern-emoji { font-size:28px; margin-bottom:16px; display:block; }
+.pattern-num { font-family:var(--mono); font-size:10px; color:var(--accent); letter-spacing:.1em; text-transform:uppercase; margin-bottom:10px; }
+.pattern-title { font-family:var(--serif); font-size:19px; font-weight:400; color:var(--ink); margin-bottom:8px; }
+.pattern-body { font-size:13px; line-height:1.65; color:var(--muted); }
+
+/* design brief */
+.brief-box {
+  background:var(--ink); color:var(--bg);
+  padding:40px 48px; margin:40px 0;
+  display:flex; align-items:flex-start; gap:32px;
+}
+.brief-icon { font-family:var(--mono); font-size:11px; color:var(--accent); letter-spacing:.1em; text-transform:uppercase; white-space:nowrap; padding-top:4px; }
+.brief-text { font-family:var(--serif); font-size:clamp(20px,2.5vw,28px); font-weight:400; font-style:italic; line-height:1.35; }
+
+/* feature cards */
+.feature-block { margin-bottom:64px; }
+.feature-block:last-child { margin-bottom:0; }
+.feature-header { display:flex; align-items:baseline; gap:20px; margin-bottom:24px; padding-bottom:16px; border-bottom:1px solid var(--line); }
+.feature-num { font-family:var(--mono); font-size:11px; color:var(--accent); letter-spacing:.1em; text-transform:uppercase; }
+.feature-name { font-family:var(--serif); font-size:clamp(28px,3vw,40px); font-weight:400; color:var(--ink); }
+.feature-name em { font-style:italic; }
+
+.feature-grid { display:grid; grid-template-columns:1fr 1fr; gap:32px; align-items:start; margin-top:24px; }
+.feature-desc { font-size:14px; line-height:1.8; color:var(--muted); }
+.feature-desc strong { color:var(--ink); font-weight:500; }
+
+.ux-notes { display:flex; flex-direction:column; gap:12px; }
+.ux-note { display:flex; gap:14px; padding:14px 18px; background:var(--white); border:1px solid var(--line); }
+.ux-note-label { font-family:var(--mono); font-size:10px; color:var(--muted); letter-spacing:.08em; text-transform:uppercase; white-space:nowrap; min-width:90px; padding-top:2px; }
+.ux-note-val { font-size:13px; line-height:1.6; color:var(--ink); }
+
+/* mockup area */
+.mockup-band {
+  background:var(--ink); padding:60px 48px;
+  margin:0 -48px; display:flex; flex-direction:column; align-items:center; gap:16px;
+}
+.mockup-label { font-family:var(--mono); font-size:10px; color:rgba(255,255,255,.4); letter-spacing:.12em; text-transform:uppercase; }
+.mockup-frame {
+  background:#1a1a1a; border:1px solid #2a2a2a;
+  border-radius:12px; padding:24px 20px;
+  font-family:var(--mono); font-size:12px; color:#e0d8cc;
+  width:100%; max-width:460px; line-height:1.6;
+}
+.mockup-frame .m-title { font-size:11px; color:rgba(255,255,255,.4); letter-spacing:.1em; text-transform:uppercase; margin-bottom:16px; border-bottom:1px solid #2a2a2a; padding-bottom:10px; }
+.mockup-frame .m-stat { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #1f1f1f; }
+.mockup-frame .m-key { color:rgba(255,255,255,.4); font-size:11px; }
+.mockup-frame .m-val { color:#e0a060; font-size:11px; }
+.mockup-frame .m-bar-wrap { margin:16px 0; }
+.mockup-frame .m-bar-label { font-size:10px; color:rgba(255,255,255,.4); letter-spacing:.08em; text-transform:uppercase; margin-bottom:8px; }
+.mockup-frame .m-bar { height:12px; background:#2a2a2a; position:relative; }
+.mockup-frame .m-bar-fill { height:100%; background:linear-gradient(90deg,#c8501a,#e8974a); width:67.8%; }
+.mockup-frame .m-btns { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:16px; }
+.mockup-frame .m-btn { padding:12px; text-align:center; border:1px solid; font-size:11px; letter-spacing:.06em; text-transform:uppercase; }
+.mockup-frame .m-btn.yellow { border-color:#f4d03f; color:#f4d03f; background:rgba(244,208,63,.08); }
+.mockup-frame .m-btn.pink { border-color:#e8974a; color:#e8974a; background:rgba(232,151,74,.08); }
+
+/* chat mockup */
+.chat-mockup {
+  background:#0f0f0f; border:1px solid #1a1a1a;
+  border-radius:12px; padding:24px 20px;
+  font-family:var(--mono); font-size:12px;
+  width:100%; max-width:460px;
+}
+.chat-header { font-size:10px; color:rgba(255,255,255,.3); letter-spacing:.1em; text-transform:uppercase; margin-bottom:20px; border-bottom:1px solid #1a1a1a; padding-bottom:10px; display:flex; justify-content:space-between; }
+.chat-bubble { padding:10px 14px; margin-bottom:10px; max-width:80%; font-size:12px; line-height:1.55; }
+.chat-bubble.other { background:#1a1a1a; color:rgba(255,255,255,.6); border-radius:0 8px 8px 8px; }
+.chat-bubble.mine { background:#c8501a; color:#fff; border-radius:8px 0 8px 8px; margin-left:auto; }
+.chat-identity { font-size:10px; color:rgba(255,255,255,.25); text-align:center; margin:16px 0 8px; font-style:italic; }
+
+/* timeline */
+.timeline { display:flex; flex-direction:column; gap:0; }
+.timeline-item { display:grid; grid-template-columns:120px 1fr; gap:32px; padding:28px 0; border-top:1px solid var(--line); }
+.timeline-item:last-child { border-bottom:1px solid var(--line); }
+.timeline-time { font-family:var(--mono); font-size:11px; color:var(--accent); letter-spacing:.06em; padding-top:4px; }
+.timeline-content {}
+.timeline-step { font-family:var(--mono); font-size:10px; color:var(--muted); letter-spacing:.1em; text-transform:uppercase; margin-bottom:8px; }
+.timeline-title { font-family:var(--serif); font-size:22px; font-weight:400; color:var(--ink); margin-bottom:10px; }
+.timeline-desc { font-size:13px; line-height:1.7; color:var(--muted); margin-bottom:12px; }
+.timeline-tags { display:flex; gap:8px; flex-wrap:wrap; }
+.timeline-tag { font-family:var(--mono); font-size:10px; padding:4px 10px; border:1px solid var(--line); color:var(--muted); letter-spacing:.06em; }
+
+/* colour palette */
+.palette { display:flex; gap:0; margin:24px 0; }
+.swatch { flex:1; height:72px; display:flex; align-items:flex-end; padding:8px; }
+.swatch span { font-family:var(--mono); font-size:9px; color:rgba(255,255,255,.7); letter-spacing:.06em; }
+.swatch.dark span { color:rgba(0,0,0,.5); }
+
+/* reflection */
+.reflection-grid { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line); border:1px solid var(--line); }
+.refl-cell { background:var(--bg); padding:28px; }
+.refl-header { font-family:var(--mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase; margin-bottom:16px; display:flex; align-items:center; gap:10px; }
+.refl-header.pos { color:#2d7a3a; }
+.refl-header.neg { color:var(--accent); }
+.refl-item { display:flex; gap:10px; margin-bottom:12px; font-size:13px; line-height:1.6; color:var(--muted); }
+.refl-sym { font-weight:700; }
+.refl-sym.pos { color:#2d7a3a; }
+.refl-sym.neg { color:var(--accent); }
+
+/* future */
+.future-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+.future-card { background:var(--white); border:1px solid var(--line); padding:28px; }
+.future-badge { display:inline-block; font-family:var(--mono); font-size:10px; letter-spacing:.08em; text-transform:uppercase; padding:4px 10px; margin-bottom:14px; }
+.future-badge.planned { color:#2d7a3a; background:rgba(45,122,58,.08); border:1px solid rgba(45,122,58,.2); }
+.future-badge.idea { color:var(--muted); background:rgba(122,117,112,.08); border:1px solid var(--line); }
+.future-title { font-family:var(--serif); font-size:20px; font-weight:400; color:var(--ink); margin-bottom:8px; }
+.future-desc { font-size:13px; line-height:1.65; color:var(--muted); }
+
+/* footer */
+footer { background:var(--ink); padding:80px 48px 48px; color:var(--bg); }
+.footer-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:80px; gap:40px; flex-wrap:wrap; }
+.footer-big { font-family:var(--serif); font-size:clamp(48px,7vw,96px); font-weight:400; font-style:italic; line-height:.9; letter-spacing:-.04em; }
+.footer-cta { display:flex; flex-direction:column; align-items:flex-end; gap:20px; padding-top:12px; }
+.footer-cta-label { font-family:var(--mono); font-size:11px; color:rgba(255,255,255,.4); letter-spacing:.1em; text-transform:uppercase; }
+.footer-btn { display:inline-flex; align-items:center; gap:10px; font-family:var(--sans); font-size:13px; font-weight:500; letter-spacing:.1em; text-transform:uppercase; color:var(--ink); background:var(--bg); text-decoration:none; padding:14px 28px; transition:background .2s,color .2s; }
+.footer-btn:hover { background:var(--accent); color:var(--white); }
+.footer-bottom { border-top:1px solid rgba(255,255,255,.1); padding-top:28px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; }
+.footer-copy { font-family:var(--mono); font-size:11px; color:rgba(255,255,255,.3); letter-spacing:.05em; }
+.footer-links { display:flex; gap:28px; list-style:none; }
+.footer-links a { font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:rgba(255,255,255,.5); text-decoration:none; transition:color .2s; }
+.footer-links a:hover { color:var(--bg); }
+
+/* reveal */
+.reveal { opacity:0; transform:translateY(28px); transition:opacity .7s cubic-bezier(.23,1,.32,1),transform .7s cubic-bezier(.23,1,.32,1); }
+.reveal.visible { opacity:1; transform:translateY(0); }
+.reveal-d1 { transition-delay:.1s; }
+.reveal-d2 { transition-delay:.2s; }
+
+@media(max-width:768px){
+  nav{padding:20px 24px;}
+  .case-hero{padding:120px 24px 60px;}
+  .case-meta{grid-template-columns:1fr 1fr; gap:16px; border-top:none;}
+  .meta-item{border-right:none; padding:0; margin:0;}
+  .case-cta{grid-column:1/-1; align-self:auto; justify-self:start; margin-top:24px;}
+  .case-body{padding:0 24px;}
+  .two-col,.three-col,.pattern-row,.feature-grid,.problem-grid,.reflection-grid,.future-grid{grid-template-columns:1fr; flex-direction:column;}
+  .brief-box{padding:28px 24px; flex-direction:column; gap:16px;}
+  .mockup-band{margin:0 -24px; padding:40px 24px;}
+  footer{padding:60px 24px 40px;}
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo">pm — ux designer</a>
+  <ul class="nav-links">
+    <li><a href="index.html#projects">Work</a></li>
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="https://drive.google.com/file/d/14PsnhjjoBFldTPVjnW1V9XbGfqqdJeax/view" target="_blank">Résumé</a></li>
+  </ul>
+</nav>
+
+<!-- Hero -->
+<header class="case-hero">
+  <div class="case-eyebrow">
+    <a href="index.html">← Back to work</a>
+    <span class="case-eyebrow-sep">/</span>
+    <span>Product Design · Web App · 2024</span>
+  </div>
+  <h1 class="case-title">The Break<br><em>Room</em></h1>
+  <div class="case-meta">
+    <div class="meta-item">
+      <div class="meta-label">Type</div>
+      <div class="meta-val">Hackathon</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Built in</div>
+      <div class="meta-val">2.5 hrs</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Tool</div>
+      <div class="meta-val">v0 + Vercel</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Status</div>
+      <div class="meta-val">Live ✓</div>
+    </div>
+    <div class="meta-item" style="border-right:none;">
+      <div class="meta-label">Role</div>
+      <div class="meta-val">Solo designer</div>
+    </div>
+    <a href="https://v0-break-room-app.vercel.app/" target="_blank" class="case-cta">Try the app →</a>
+  </div>
+</header>
+
+<div class="case-body">
+
+  <!-- 01 Context -->
+  <section class="case-section reveal">
+    <div class="section-label"><span class="num">01</span> Context &amp; Inspiration</div>
+    <div class="two-col">
+      <div>
+        <h2 class="section-heading">A real emotional<br><em>problem to solve.</em></h2>
+        <p class="body-text">At a hackathon with 2.5 hours on the clock, I wanted to build something that solved a real emotional problem — not just a technical one. The idea came from observing people around me: <strong>stress is universal, but the outlets are broken.</strong></p>
+        <p class="body-text">Toxic Reddit threads. Corporate wellness apps that feel clinical. Anonymous venting platforms that spiral into negativity. I wanted something that felt immediate, safe, and a little bit fun — like a stress ball you can't lose.</p>
+        <p class="body-text">A hackathon attendant mentioned Blind as a reference point. I took the anonymity idea but stripped away the professional anxiety and replaced it with warmth.</p>
+      </div>
+      <div>
+        <div class="section-label" style="margin-bottom:20px;">Existing landscape — what's broken</div>
+        <div class="problem-grid">
+          <div class="problem-cell">
+            <div class="x">✕</div>
+            <div class="p-title">Reddit forums</div>
+            <div class="p-body">Venting threads often escalate — people pile on or compete in suffering.</div>
+          </div>
+          <div class="problem-cell">
+            <div class="x">✕</div>
+            <div class="p-title">Blind anonymous</div>
+            <div class="p-body">Professionally-focused — stress about work IS the content, not the escape.</div>
+          </div>
+          <div class="problem-cell">
+            <div class="x">✕</div>
+            <div class="p-title">Wellness apps</div>
+            <div class="p-body">Feel like homework — meditation timers and breathing guides add pressure.</div>
+          </div>
+          <div class="problem-cell">
+            <div class="x">✕</div>
+            <div class="p-title">Default: nothing</div>
+            <div class="p-body">Most people just suffer quietly or doom-scroll — no healthy fast outlet.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 Problem Space -->
+  <section class="case-section reveal">
+    <div class="section-label"><span class="num">02</span> The Problem Space</div>
+    <h2 class="section-heading">Three observed<br><em>behavioural patterns.</em></h2>
+    <p class="body-text" style="margin-bottom:40px;">While there was no formal research phase, the design brief came from three observed patterns that kept surfacing in conversations around me.</p>
+
+    <div class="pattern-row">
+      <div class="pattern-card">
+        <span class="pattern-emoji">🤯</span>
+        <div class="pattern-num">Pattern 01</div>
+        <div class="pattern-title">Immediate release valve</div>
+        <p class="pattern-body">People don't want to be coached through 10 minutes of breathing — they want to hit something, right now, safely.</p>
+      </div>
+      <div class="pattern-card">
+        <span class="pattern-emoji">🤫</span>
+        <div class="pattern-num">Pattern 02</div>
+        <div class="pattern-title">Anonymity enables honesty</div>
+        <p class="pattern-body">Most people can't vent to colleagues or even friends without social consequences. A nameless wall removes that fear.</p>
+      </div>
+      <div class="pattern-card">
+        <span class="pattern-emoji">🫂</span>
+        <div class="pattern-num">Pattern 03</div>
+        <div class="pattern-title">Someone to hear you</div>
+        <p class="pattern-body">Not advice, not therapy — just a real human on the other end saying "yeah, that sucks."</p>
+      </div>
+    </div>
+
+    <div class="brief-box">
+      <span class="brief-icon">Design brief</span>
+      <p class="brief-text">"Build the fastest, warmest, most frictionless stress outlet possible — visualise how you feel, release it physically, say it out loud, or connect with someone. No login, no judgment, no commitment."</p>
+    </div>
+  </section>
+
+  <!-- 03 Features -->
+  <section class="case-section reveal">
+    <div class="section-label"><span class="num">03</span> Features</div>
+    <h2 class="section-heading">Three features, one<br><em>emotional arc.</em></h2>
+    <p class="body-text" style="margin-bottom:56px;">Each feature solves one of the three patterns — and each is usable in under 30 seconds with no account required. Release → Express → Connect.</p>
+
+    <!-- Feature 01 -->
+    <div class="feature-block">
+      <div class="feature-header">
+        <span class="feature-num">Feature 01</span>
+        <div class="feature-name">Smash <em>It</em></div>
+      </div>
+      <div class="feature-grid">
+        <div>
+          <p class="feature-desc">A full-screen pink tile with a lightning bolt — "One button. Pure relief." A pixel stress bar shows your current stress level as a percentage. Press to smash your frustration and watch the bar drop. <strong>Instant physical release — one tap, no words needed.</strong></p>
+          <div class="ux-notes" style="margin-top:20px;">
+            <div class="ux-note">
+              <span class="ux-note-label">UX intent</span>
+              <span class="ux-note-val">Instant physical release — one tap, no words needed.</span>
+            </div>
+            <div class="ux-note">
+              <span class="ux-note-label">Stress bar</span>
+              <span class="ux-note-val">Pixel progress bar visualises stress level as % — satisfying to watch it drop.</span>
+            </div>
+            <div class="ux-note">
+              <span class="ux-note-label">Naming</span>
+              <span class="ux-note-val">"Smash It" + lightning bolt ⚡ — aggressive, playful, exactly right.</span>
+            </div>
+            <div class="ux-note">
+              <span class="ux-note-label">Solves</span>
+              <span class="ux-note-val">Stress visualisation + instant release.</span>
+            </div>
+          </div>
+        </div>
+        <div class="mockup-band" style="margin:0; border-radius:0; padding:32px 28px;">
+          <div class="mockup-label">Dashboard — The Break Room</div>
+          <div class="mockup-frame">
+            <div class="m-title">Welcome, Cactus · Guest mode</div>
+            <div class="m-stat"><span class="m-key">Status</span><span class="m-val">1 online</span></div>
+            <div class="m-stat"><span class="m-key">Streak</span><span class="m-val">🔥 No streak</span></div>
+            <div class="m-bar-wrap">
+              <div class="m-bar-label">Stress level — 67.8% 😩</div>
+              <div class="m-bar"><div class="m-bar-fill"></div></div>
+            </div>
+            <div class="m-btns">
+              <div class="m-btn yellow">💬 Vent Wall</div>
+              <div class="m-btn pink">⚡ Smash It</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature 02 -->
+    <div class="feature-block">
+      <div class="feature-header">
+        <span class="feature-num">Feature 02</span>
+        <div class="feature-name">Vent <em>Wall</em></div>
+      </div>
+      <div class="feature-grid">
+        <div>
+          <p class="feature-desc">Anonymous public posts — 280 characters, auto-cleared every 24 hours. Posts appear as sticky notes with emoji reactions. A "BINGO" button marks when a post resonates — <strong>solidarity without replies or arguments.</strong></p>
+          <div class="ux-notes" style="margin-top:20px;">
+            <div class="ux-note">
+              <span class="ux-note-label">UX intent</span>
+              <span class="ux-note-val">Saying it out loud matters — even to strangers.</span>
+            </div>
+            <div class="ux-note">
+              <span class="ux-note-label">Ephemerality</span>
+              <span class="ux-note-val">24h auto-clear keeps the wall fresh, not toxic.</span>
+            </div>
+            <div class="ux-note">
+              <span class="ux-note-label">Bingo</span>
+              <span class="ux-note-val">"Same" button — you're not alone in this feeling.</span>
+            </div>
+            <div class="ux-note">
+              <span class="ux-note-label">Solves</span>
+              <span class="ux-note-val">Safe anonymous venting.</span>
+            </div>
+          </div>
+        </div>
+        <div style="background:var(--ink); padding:32px 28px; display:flex; flex-direction:column; gap:12px;">
+          <div class="mockup-label">Vent Wall — anonymous frustrations</div>
+          <div style="background:#1a1a1a; border:1px solid #2a2a2a; padding:16px; font-family:var(--mono); font-size:11px; color:rgba(255,255,255,.7); line-height:1.6;">
+            <div style="color:#f4d03f; margin-bottom:8px;">⏰ Posts auto-clear after 24 hours</div>
+            <div style="border-bottom:1px solid #2a2a2a; padding-bottom:12px; margin-bottom:12px; color:rgba(255,255,255,.5); font-size:10px;">What's stressing you out? (Anonymous)</div>
+            <div style="background:#252010; border:1px solid #3a3020; padding:14px; margin-bottom:8px;">
+              <div style="margin-bottom:8px;">Why do we need a meeting to plan the meeting about meetings?</div>
+              <div style="font-size:10px; color:rgba(255,255,255,.35);">🔥 12 &nbsp; 💯 8 &nbsp; 😂 5 &nbsp; · &nbsp; 2h ago &nbsp; · &nbsp; <span style="color:#e8974a;">🎯 BINGO</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature 03 -->
+    <div class="feature-block">
+      <div class="feature-header">
+        <span class="feature-num">Feature 03</span>
+        <div class="feature-name">Live <em>Chat</em></div>
+      </div>
+      <div class="feature-grid">
+        <div>
+          <p class="feature-desc">A completely dark-themed anonymous chat room — the visual contrast from the rest of the app is intentional. You get a random name like "Cactus". Messages clear every 24 hours. <strong>"Say something. No one will ever know."</strong></p>
+          <div class="ux-notes" style="margin-top:20px;">
+            <div class="ux-note">
+              <span class="ux-note-label">Dark theme</span>
+              <span class="ux-note-val">Signals "private space" — different rules apply here.</span>
+            </div>
+            <div class="ux-note">
+              <span class="ux-note-label">Identity</span>
+              <span class="ux-note-val">Auto-assigned random name — no choice, no accountability.</span>
+            </div>
+            <div class="ux-note">
+              <span class="ux-note-label">Copywriting</span>
+              <span class="ux-note-val">"No one will ever know" — sets the tone perfectly.</span>
+            </div>
+            <div class="ux-note">
+              <span class="ux-note-label">Solves</span>
+              <span class="ux-note-val">Real human connection.</span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="chat-mockup">
+            <div class="chat-header"><span>Live Chat</span><span style="color:#2d7a3a;">● 1 online</span></div>
+            <div class="chat-identity">⏰ Messages auto-clear after 24h</div>
+            <div class="chat-bubble other">I have a presentation in 10 minutes and my slides just crashed 😭</div>
+            <div class="chat-bubble mine">omg same thing happened to me last week. you got this.</div>
+            <div style="font-family:var(--mono); font-size:10px; color:rgba(255,255,255,.2); text-align:center; margin-top:16px;">Chatting as Cactus</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 Process -->
+  <section class="case-section reveal">
+    <div class="section-label"><span class="num">04</span> Design Process</div>
+    <h2 class="section-heading">2.5 hours,<br><em>four stages.</em></h2>
+    <div class="timeline" style="margin-top:40px;">
+      <div class="timeline-item">
+        <div class="timeline-time">0:00 – 0:20</div>
+        <div class="timeline-content">
+          <div class="timeline-step">Step 01 · Define</div>
+          <div class="timeline-title">Brief &amp; Concept</div>
+          <p class="timeline-desc">Defined the problem space from observed behaviour rather than formal research. Decided on the core constraint: zero friction, zero login, immediate value. Named it "The Break Room" — a place you go to decompress, not to perform wellness.</p>
+          <div class="timeline-tags">
+            <span class="timeline-tag">problem framing</span>
+            <span class="timeline-tag">naming</span>
+            <span class="timeline-tag">constraints</span>
+          </div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-time">0:20 – 0:45</div>
+        <div class="timeline-content">
+          <div class="timeline-step">Step 02 · Design intent</div>
+          <div class="timeline-title">Aesthetic Direction</div>
+          <p class="timeline-desc">Chose pixel art + pastel deliberately — it's playful and nostalgic, which creates emotional distance from the stress itself. The visual language says "safe, light space" without using corporate wellness clichés like gradients and sans-serif headers.</p>
+          <div class="timeline-tags">
+            <span class="timeline-tag">pixel art</span>
+            <span class="timeline-tag">pastel palette</span>
+            <span class="timeline-tag">anti-clinical</span>
+          </div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-time">0:45 – 2:30</div>
+        <div class="timeline-content">
+          <div class="timeline-step">Step 03 · Build</div>
+          <div class="timeline-title">Build on v0</div>
+          <p class="timeline-desc">Used v0 by Vercel to generate and iterate on the UI through prompting. Focused engineering effort on the live chat feature — the most technically complex piece — then built the stress level bar, Smash It tile, and vent wall. Deployed directly to Vercel.</p>
+          <div class="timeline-tags">
+            <span class="timeline-tag">v0 prompting</span>
+            <span class="timeline-tag">real-time chat</span>
+            <span class="timeline-tag">rapid iteration</span>
+          </div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-time">2:30</div>
+        <div class="timeline-content">
+          <div class="timeline-step">Step 04 · Ship</div>
+          <div class="timeline-title">Live &amp; Presented</div>
+          <p class="timeline-desc">Shipped a fully functional live app within the hackathon time limit. The core user journey — land → feel something → leave feeling slightly better — worked end to end. Zero accounts, zero onboarding, immediate access.</p>
+          <div class="timeline-tags">
+            <span class="timeline-tag">shipped ✓</span>
+            <span class="timeline-tag">fully functional</span>
+            <span class="timeline-tag">live URL</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 Design System -->
+  <section class="case-section reveal">
+    <div class="section-label"><span class="num">05</span> Design System</div>
+    <h2 class="section-heading">Colour, type,<br><em>and pixels.</em></h2>
+
+    <div class="two-col" style="margin-top:40px;">
+      <div>
+        <div class="section-label" style="margin-bottom:16px;">Colour palette</div>
+        <div class="palette">
+          <div class="swatch" style="background:#E8974A;"><span>Door Orange</span></div>
+          <div class="swatch" style="background:#7A8C5A;"><span>Pixel Sage</span></div>
+          <div class="swatch" style="background:#F4B878;" class="dark"><span style="color:rgba(0,0,0,.5);">Light Orange</span></div>
+          <div class="swatch" style="background:#A89EC8;"><span>Muted Lav.</span></div>
+          <div class="swatch" style="background:#78B898;"><span>Soft Teal</span></div>
+          <div class="swatch" style="background:#EDEADE;"><span style="color:rgba(0,0,0,.4);">Warm Cream</span></div>
+        </div>
+        <p class="body-text" style="font-size:13px;">A warm, playful palette that reads as emotional rather than clinical. Orange-sage as the primary pair creates warmth without the sterile blues of typical wellness products.</p>
+      </div>
+      <div>
+        <div class="section-label" style="margin-bottom:16px;">Typography</div>
+        <div class="card">
+          <div class="card-label">Display — Press Start 2P</div>
+          <div style="font-size:20px; font-family:var(--mono); margin-bottom:12px; color:var(--ink);">BREAK ROOM</div>
+          <div class="card-body">Used for headings, labels, pixel UI elements, section numbers. The pixel font creates instant nostalgia — it says "game" not "app".</div>
+        </div>
+        <div class="card" style="margin-top:12px;">
+          <div class="card-label">Body — JetBrains Mono</div>
+          <div style="font-size:13px; font-family:var(--mono); margin-bottom:12px; color:var(--muted);">Stressed? Same. // anonymous · no login</div>
+          <div class="card-body">Body copy, descriptions, captions, UI labels. Mono keeps the technical-but-warm tone consistent throughout.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label" style="margin-top:48px; margin-bottom:16px;">Pixel shadow rule</div>
+    <div class="card">
+      <div class="card-body">Every interactive element uses a flat drop shadow offset at <strong>3px or 4px — no blur radius.</strong> This is the signature pixel art effect that unifies the whole UI. Shadow colour always matches the element's border colour, darkened one step. It gives every interactive element a satisfying, toy-like physicality.</div>
+    </div>
+  </section>
+
+  <!-- 06 Future -->
+  <section class="case-section reveal">
+    <div class="section-label"><span class="num">06</span> Future Features</div>
+    <h2 class="section-heading">From outlet to<br><em>daily habit.</em></h2>
+    <p class="body-text" style="margin-bottom:40px;">The hackathon was just the beginning. With a registered user layer, these features would turn Break Room from a one-time release valve into a daily wellbeing ritual.</p>
+    <div class="future-grid">
+      <div class="future-card">
+        <span class="future-badge planned">Planned</span>
+        <div class="future-title">🔥 Daily Streak System</div>
+        <p class="future-desc">Reward users who return to decompress every day. A streak counter — like Duolingo but for your mental health — turns a one-time visit into a daily check-in habit.</p>
+      </div>
+      <div class="future-card">
+        <span class="future-badge idea">Idea</span>
+        <div class="future-title">Streak Badges &amp; Milestones</div>
+        <p class="future-desc">Unlock pixel art badges at 7, 30, 100 day streaks. Your self-care has achievements now.</p>
+      </div>
+      <div class="future-card">
+        <span class="future-badge idea">Idea</span>
+        <div class="future-title">Personal Vent History</div>
+        <p class="future-desc">Registered users can see their own past vents — private, not public. Journaling without the pressure of journaling.</p>
+      </div>
+      <div class="future-card">
+        <span class="future-badge idea">Idea</span>
+        <div class="future-title">Streak Freeze</div>
+        <p class="future-desc">Miss a day? Use a freeze to protect your streak. Reduces anxiety about the streak itself — because the app is supposed to reduce stress, not add it.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 Reflection -->
+  <section class="case-section reveal">
+    <div class="section-label"><span class="num">07</span> Reflection</div>
+    <h2 class="section-heading">What worked,<br><em>what's next.</em></h2>
+    <div class="reflection-grid" style="margin-top:40px;">
+      <div class="refl-cell">
+        <div class="refl-header pos">✓ What worked</div>
+        <div class="refl-item"><span class="refl-sym pos">+</span><span>Zero-friction access — users inside within 5 seconds of landing. No login, no onboarding.</span></div>
+        <div class="refl-item"><span class="refl-sym pos">+</span><span>The pixel art aesthetic created instant emotional distance from the stress — it felt like a game, not a therapy app.</span></div>
+        <div class="refl-item"><span class="refl-sym pos">+</span><span>Shipping a fully functional live app in 2.5 hours proved that v0 + clear design intent = real product, fast.</span></div>
+        <div class="refl-item"><span class="refl-sym pos">+</span><span>Three features, one clear emotional arc: release → express → connect. Each one escalates intimacy at the user's pace.</span></div>
+      </div>
+      <div class="refl-cell">
+        <div class="refl-header neg">! Next time</div>
+        <div class="refl-item"><span class="refl-sym neg">!</span><span>The vent wall needs moderation or tone guardrails — anonymous public walls can turn dark without them.</span></div>
+        <div class="refl-item"><span class="refl-sym neg">!</span><span>Live chat with strangers raises safety questions I didn't fully resolve in the hackathon timeline.</span></div>
+        <div class="refl-item"><span class="refl-sym neg">!</span><span>Would love to run usability testing — especially around whether the stress button actually feels cathartic, or just silly.</span></div>
+        <div class="refl-item"><span class="refl-sym neg">!</span><span>No accessibility consideration for the pixel font at small sizes — it can be hard to read for some users.</span></div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /case-body -->
+
+<footer>
+  <div class="footer-top">
+    <div class="footer-big">Let's<br>work.</div>
+    <div class="footer-cta">
+      <span class="footer-cta-label">Next project</span>
+      <a href="kitchenmate.html" class="footer-btn">KitchenMate →</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2025 Pornpawee Manyuen — UX Designer</span>
+    <ul class="footer-links">
+      <li><a href="https://www.behance.net/pornpawee-manyuen" target="_blank">Behance</a></li>
+      <li><a href="https://www.instagram.com/thereandthese/" target="_blank">Instagram</a></li>
+      <li><a href="https://www.linkedin.com/in/pornpawee-manyuen/" target="_blank">LinkedIn</a></li>
+      <li><a href="https://drive.google.com/file/d/14PsnhjjoBFldTPVjnW1V9XbGfqqdJeax/view" target="_blank">Résumé</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+var cur = document.getElementById('cursor');
+var mx=0,my=0,cx=0,cy=0;
+document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;});
+function lerp(a,b,t){return a+(b-a)*t;}
+(function tick(){cx=lerp(cx,mx,.18);cy=lerp(cy,my,.18);cur.style.left=cx+'px';cur.style.top=cy+'px';requestAnimationFrame(tick);})();
+document.querySelectorAll('a,button').forEach(function(el){
+  el.addEventListener('mouseenter',function(){cur.classList.add('grow');});
+  el.addEventListener('mouseleave',function(){cur.classList.remove('grow');});
+});
+document.addEventListener('mouseleave',function(){cur.classList.add('hidden');});
+document.addEventListener('mouseenter',function(){cur.classList.remove('hidden');});
+
+var io = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('visible');});
+},{threshold:.08});
+document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
+</script>
+</body>
+</html>

@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KitchenMate — Pornpawee Manyuen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Syne:wght@400;500;700;800&family=Syne+Mono&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { font-size:16px; scroll-behavior:smooth; }
+
+:root {
+  --bg:     #f0ede6;
+  --ink:    #0f0e0b;
+  --muted:  #7a7570;
+  --line:   #d4d0c8;
+  --accent: #c8501a;
+  --green:  #3a6b3a;
+  --white:  #faf9f6;
+  --serif:  'Instrument Serif', Georgia, serif;
+  --sans:   'Syne', sans-serif;
+  --mono:   'Syne Mono', monospace;
+}
+
+body { background:var(--bg); color:var(--ink); font-family:var(--sans); cursor:none; overflow-x:hidden; }
+#cursor { position:fixed; width:10px; height:10px; background:var(--ink); border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:width .25s,height .25s,background .25s,opacity .15s; mix-blend-mode:multiply; }
+#cursor.grow { width:48px; height:48px; background:var(--accent); }
+#cursor.hidden { opacity:0; }
+
+nav { position:fixed; top:0; left:0; right:0; z-index:500; display:flex; justify-content:space-between; align-items:center; padding:28px 48px; mix-blend-mode:multiply; }
+.nav-logo { font-family:var(--mono); font-size:13px; color:var(--ink); text-decoration:none; letter-spacing:.04em; }
+.nav-links { display:flex; gap:36px; list-style:none; }
+.nav-links a { font-family:var(--sans); font-size:12px; font-weight:500; letter-spacing:.12em; text-transform:uppercase; color:var(--ink); text-decoration:none; opacity:.5; transition:opacity .2s; }
+.nav-links a:hover { opacity:1; }
+
+/* Hero */
+.case-hero {
+  min-height:90vh; padding:160px 48px 80px;
+  display:flex; flex-direction:column; justify-content:flex-end;
+  position:relative; overflow:hidden; border-bottom:1px solid var(--line);
+}
+.case-hero::before {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(160deg,#e8f0e0 0%,var(--bg) 65%);
+  pointer-events:none;
+}
+.case-eyebrow { font-family:var(--mono); font-size:12px; color:var(--muted); letter-spacing:.12em; text-transform:uppercase; margin-bottom:24px; position:relative; z-index:1; display:flex; align-items:center; gap:16px; }
+.case-eyebrow a { color:var(--muted); text-decoration:none; transition:color .2s; }
+.case-eyebrow a:hover { color:var(--accent); }
+.case-eyebrow-sep { color:var(--line); }
+.case-title { font-family:var(--serif); font-size:clamp(64px,10vw,140px); font-weight:400; line-height:.9; letter-spacing:-.03em; color:var(--ink); margin-bottom:48px; position:relative; z-index:1; }
+.case-title em { font-style:italic; color:var(--green); }
+
+.case-meta { display:grid; grid-template-columns:repeat(5,auto) 1fr; gap:0; border-top:1px solid var(--line); padding-top:28px; position:relative; z-index:1; }
+.meta-item { padding:0 32px 0 0; border-right:1px solid var(--line); margin-right:32px; }
+.meta-item:last-of-type { border-right:none; }
+.meta-label { font-family:var(--mono); font-size:10px; color:var(--muted); letter-spacing:.1em; text-transform:uppercase; margin-bottom:6px; }
+.meta-val { font-family:var(--sans); font-size:13px; font-weight:500; color:var(--ink); }
+.case-cta { display:inline-flex; align-items:center; gap:10px; font-family:var(--sans); font-size:12px; font-weight:500; letter-spacing:.1em; text-transform:uppercase; color:var(--white); background:var(--green); text-decoration:none; padding:13px 24px; transition:background .2s; align-self:flex-end; justify-self:end; grid-column:-1; }
+.case-cta:hover { background:var(--ink); }
+
+/* Body */
+.case-body { max-width:1200px; margin:0 auto; padding:0 48px; }
+.case-section { padding:80px 0; border-bottom:1px solid var(--line); }
+.case-section:last-child { border-bottom:none; }
+
+.section-label { font-family:var(--mono); font-size:11px; letter-spacing:.15em; text-transform:uppercase; color:var(--muted); margin-bottom:40px; display:flex; align-items:center; gap:16px; }
+.section-label::before { content:''; display:inline-block; width:24px; height:1px; background:var(--muted); }
+.section-label .num { color:var(--green); }
+
+.section-heading { font-family:var(--serif); font-size:clamp(32px,4vw,52px); font-weight:400; line-height:1.1; letter-spacing:-.02em; color:var(--ink); margin-bottom:32px; }
+.section-heading em { font-style:italic; }
+
+.body-text { font-size:15px; line-height:1.85; color:var(--muted); max-width:680px; margin-bottom:20px; }
+.body-text strong { color:var(--ink); font-weight:500; }
+
+.two-col { display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:start; }
+.three-col { display:grid; grid-template-columns:1fr 1fr 1fr; gap:24px; }
+
+/* Quote pullout */
+.quote-pull { border-left:3px solid var(--green); padding:20px 28px; margin:28px 0; background:rgba(58,107,58,.05); }
+.quote-pull blockquote { font-family:var(--serif); font-size:18px; font-style:italic; line-height:1.5; color:var(--ink); margin-bottom:8px; }
+.quote-pull cite { font-family:var(--mono); font-size:10px; color:var(--muted); letter-spacing:.08em; text-transform:uppercase; font-style:normal; }
+
+/* Insight cards */
+.insight-grid { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line); border:1px solid var(--line); margin-top:32px; }
+.insight-card { background:var(--bg); padding:28px; }
+.insight-num { font-family:var(--mono); font-size:10px; color:var(--green); letter-spacing:.1em; text-transform:uppercase; margin-bottom:10px; }
+.insight-label { font-family:var(--sans); font-size:12px; font-weight:500; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+.insight-title { font-family:var(--serif); font-size:20px; font-weight:400; color:var(--ink); margin-bottom:10px; }
+.insight-body { font-size:13px; line-height:1.65; color:var(--muted); }
+
+/* Persona cards */
+.persona-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:24px; margin-top:32px; }
+.persona-card { background:var(--white); border:1px solid var(--line); padding:28px; }
+.persona-avatar { width:40px; height:40px; border-radius:50%; background:var(--line); display:flex; align-items:center; justify-content:center; font-size:18px; margin-bottom:16px; }
+.persona-name { font-family:var(--serif); font-size:22px; font-weight:400; color:var(--ink); margin-bottom:4px; }
+.persona-tag { font-family:var(--mono); font-size:10px; color:var(--green); letter-spacing:.08em; text-transform:uppercase; margin-bottom:12px; }
+.persona-body { font-size:13px; line-height:1.6; color:var(--muted); margin-bottom:14px; }
+.persona-need { font-size:12px; line-height:1.55; color:var(--ink); padding:10px 14px; background:rgba(58,107,58,.06); border-left:2px solid var(--green); }
+.persona-need strong { color:var(--green); font-weight:500; font-size:10px; letter-spacing:.06em; text-transform:uppercase; display:block; margin-bottom:3px; }
+
+/* Feature flow */
+.flow-grid { display:grid; grid-template-columns:1fr auto 1fr auto 1fr; align-items:start; gap:0; margin-top:32px; }
+.flow-arrow { font-size:20px; color:var(--line); align-self:center; padding:0 8px; padding-top:20px; }
+.flow-item { }
+.flow-num { font-family:var(--mono); font-size:10px; color:var(--green); letter-spacing:.1em; text-transform:uppercase; margin-bottom:8px; }
+.flow-title { font-family:var(--serif); font-size:18px; color:var(--ink); margin-bottom:8px; }
+.flow-body { font-size:12px; line-height:1.6; color:var(--muted); }
+.flow-tag { display:inline-block; font-family:var(--mono); font-size:9px; letter-spacing:.08em; text-transform:uppercase; color:var(--green); background:rgba(58,107,58,.07); padding:3px 8px; margin-top:8px; }
+
+/* Image display */
+.img-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-top:32px; }
+.img-grid.two { grid-template-columns:1fr 1fr; }
+.img-card { background:var(--white); border:1px solid var(--line); overflow:hidden; }
+.img-card img { width:100%; display:block; aspect-ratio:4/3; object-fit:cover; }
+.img-caption { font-family:var(--mono); font-size:10px; color:var(--muted); letter-spacing:.06em; padding:10px 12px; border-top:1px solid var(--line); }
+
+/* Process timeline */
+.process-steps { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line); border:1px solid var(--line); margin-top:32px; }
+.process-step { background:var(--bg); padding:32px; }
+.ps-date { font-family:var(--mono); font-size:10px; color:var(--muted); letter-spacing:.08em; margin-bottom:12px; }
+.ps-label { font-family:var(--mono); font-size:10px; color:var(--green); letter-spacing:.1em; text-transform:uppercase; margin-bottom:8px; }
+.ps-title { font-family:var(--serif); font-size:22px; font-weight:400; color:var(--ink); margin-bottom:10px; }
+.ps-body { font-size:13px; line-height:1.7; color:var(--muted); margin-bottom:14px; }
+.ps-tags { display:flex; gap:8px; flex-wrap:wrap; }
+.ps-tag { font-family:var(--mono); font-size:10px; padding:3px 10px; border:1px solid var(--line); color:var(--muted); letter-spacing:.06em; }
+
+/* Reflection */
+.reflection-grid { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line); border:1px solid var(--line); }
+.refl-cell { background:var(--bg); padding:28px; }
+.refl-header { font-family:var(--mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase; margin-bottom:16px; display:flex; align-items:center; gap:10px; }
+.refl-header.pos { color:#2d7a3a; }
+.refl-header.neg { color:var(--accent); }
+.refl-item { display:flex; gap:10px; margin-bottom:12px; font-size:13px; line-height:1.6; color:var(--muted); }
+.refl-sym { font-weight:700; flex-shrink:0; }
+.refl-sym.pos { color:#2d7a3a; }
+.refl-sym.neg { color:var(--accent); }
+
+/* Brief box */
+.brief-box { background:var(--ink); color:var(--bg); padding:40px 48px; margin:40px 0; display:flex; align-items:flex-start; gap:32px; }
+.brief-icon { font-family:var(--mono); font-size:11px; color:var(--green); letter-spacing:.1em; text-transform:uppercase; white-space:nowrap; padding-top:4px; }
+.brief-text { font-family:var(--serif); font-size:clamp(20px,2.5vw,28px); font-weight:400; font-style:italic; line-height:1.35; }
+
+/* feature highlight */
+.feature-row { display:grid; grid-template-columns:48px 1fr; gap:24px; padding:24px 0; border-top:1px solid var(--line); align-items:start; }
+.feature-emoji { font-size:24px; padding-top:4px; }
+.feature-title { font-family:var(--serif); font-size:22px; font-weight:400; color:var(--ink); margin-bottom:6px; }
+.feature-desc { font-size:13px; line-height:1.65; color:var(--muted); }
+
+/* footer */
+footer { background:var(--ink); padding:80px 48px 48px; color:var(--bg); }
+.footer-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:80px; gap:40px; flex-wrap:wrap; }
+.footer-big { font-family:var(--serif); font-size:clamp(48px,7vw,96px); font-weight:400; font-style:italic; line-height:.9; letter-spacing:-.04em; }
+.footer-cta { display:flex; flex-direction:column; align-items:flex-end; gap:20px; padding-top:12px; }
+.footer-cta-label { font-family:var(--mono); font-size:11px; color:rgba(255,255,255,.4); letter-spacing:.1em; text-transform:uppercase; }
+.footer-btn { display:inline-flex; align-items:center; gap:10px; font-family:var(--sans); font-size:13px; font-weight:500; letter-spacing:.1em; text-transform:uppercase; color:var(--ink); background:var(--bg); text-decoration:none; padding:14px 28px; transition:background .2s,color .2s; }
+.footer-btn:hover { background:var(--accent); color:var(--white); }
+.footer-bottom { border-top:1px solid rgba(255,255,255,.1); padding-top:28px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; }
+.footer-copy { font-family:var(--mono); font-size:11px; color:rgba(255,255,255,.3); letter-spacing:.05em; }
+.footer-links { display:flex; gap:28px; list-style:none; }
+.footer-links a { font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:rgba(255,255,255,.5); text-decoration:none; transition:color .2s; }
+.footer-links a:hover { color:var(--bg); }
+
+.reveal { opacity:0; transform:translateY(28px); transition:opacity .7s cubic-bezier(.23,1,.32,1),transform .7s cubic-bezier(.23,1,.32,1); }
+.reveal.visible { opacity:1; transform:translateY(0); }
+.reveal-d1 { transition-delay:.1s; }
+.reveal-d2 { transition-delay:.2s; }
+
+@media(max-width:768px){
+  nav{padding:20px 24px;}
+  .case-hero{padding:120px 24px 60px;}
+  .case-meta{grid-template-columns:1fr 1fr;gap:16px;border-top:none;}
+  .meta-item{border-right:none;padding:0;margin:0;}
+  .case-cta{grid-column:1/-1;align-self:auto;justify-self:start;margin-top:24px;}
+  .case-body{padding:0 24px;}
+  .two-col,.three-col,.insight-grid,.persona-grid,.process-steps,.reflection-grid,.img-grid,.img-grid.two{grid-template-columns:1fr;flex-direction:column;}
+  .flow-grid{grid-template-columns:1fr;} .flow-arrow{display:none;}
+  .brief-box{padding:28px 24px;flex-direction:column;gap:16px;}
+  footer{padding:60px 24px 40px;}
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo">pm — ux designer</a>
+  <ul class="nav-links">
+    <li><a href="index.html#projects">Work</a></li>
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="https://drive.google.com/file/d/14PsnhjjoBFldTPVjnW1V9XbGfqqdJeax/view" target="_blank">Résumé</a></li>
+  </ul>
+</nav>
+
+<!-- Hero -->
+<header class="case-hero">
+  <div class="case-eyebrow">
+    <a href="index.html">← Back to work</a>
+    <span class="case-eyebrow-sep">/</span>
+    <span>UX Design · User Research · MSc Project</span>
+  </div>
+  <h1 class="case-title">Kitchen<em>Mate</em></h1>
+  <div class="case-meta">
+    <div class="meta-item">
+      <div class="meta-label">Role</div>
+      <div class="meta-val">UX Designer</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Timeframe</div>
+      <div class="meta-val">Nov – Dec 2022</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Platform</div>
+      <div class="meta-val">Echo Show · Mobile</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Context</div>
+      <div class="meta-val">MSc HCID Capstone</div>
+    </div>
+    <div class="meta-item" style="border-right:none;">
+      <div class="meta-label">Tools</div>
+      <div class="meta-val">Figma · Miro · Zoom</div>
+    </div>
+    <a href="https://www.figma.com/proto/VIY7ZKJ1cq32RBJTOpjVwE/Personas-and-Wireframing?node-id=319-169&scaling=min-zoom&page-id=0%3A1&starting-point-node-id=319%3A169" target="_blank" class="case-cta">View prototype →</a>
+  </div>
+</header>
+
+<div class="case-body">
+
+  <!-- Overview -->
+  <section class="case-section reveal">
+    <div class="section-label"><span class="num">00</span> Overview</div>
+    <div class="two-col">
+      <div>
+        <h2 class="section-heading">Cooking smarter,<br><em>wasting less.</em></h2>
+        <p class="body-text">KitchenMate is an interaction design project exploring how an app can assist users in maintaining a <strong>healthy lifestyle</strong> while fostering mindfulness about the <strong>environmental impact</strong> of the food they consume.</p>
+        <p class="body-text">Designed for Amazon Echo Show 10 and mobile — chosen for its camera tracking that physically rotates the screen to face the user while they cook, perfect for multitasking hands-free.</p>
+      </div>
+      <div>
+        <div class="section-label" style="margin-bottom:16px;">Project goal</div>
+        <div class="brief-box" style="margin:0; padding:32px;">
+          <span class="brief-icon">Primary<br>objective</span>
+          <p class="brief-text">"Assist users in maintaining a healthy lifestyle by improving their diet and fostering mindfulness about the environmental impact of the food they consume."</p>
+        </div>
+        <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:20px;">
+          <span style="font-family:var(--mono); font-size:10px; padding:4px 12px; border:1px solid var(--line); color:var(--muted);">🌿 User Research</span>
+          <span style="font-family:var(--mono); font-size:10px; padding:4px 12px; border:1px solid var(--line); color:var(--muted);">🥕 UX Design</span>
+          <span style="font-family:var(--mono); font-size:10px; padding:4px 12px; border:1px solid var(--line); color:var(--muted);">♨ Interaction Design</span>
+          <span style="font-family:var(--mono); font-size:10px; padding:4px 12px; border:1px solid var(--line); color:var(--muted);">🌱 Sustainability</span>
+          <span style="font-family:var(--mono); font-size:10px; padding:4px 12px; border:1px solid var(--line); color:var(--muted);">🍋 UX Writing</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 01 Research -->
+  <section class="case-section reveal">
+    <div class="section-label"><span class="num">01</span> User Research</div>
+    <h2 class="section-heading">10 interviews.<br><em>4 clear patterns.</em></h2>
+    <p class="body-text" style="margin-bottom:40px;">Two weeks of semi-structured interviews and naturalistic observation. Interviews covered lifestyle, diet, grocery habits, environmental awareness, and kitchen behaviour. Six naturalistic observations captured real meal prep and grocery shopping in context.</p>
+
+    <div class="three-col" style="gap:16px; margin-bottom:40px;">
+      <div class="quote-pull">
+        <blockquote>"Cooking takes so much time. I'm always busy at work so I ended up ordering fast-food."</blockquote>
+        <cite>Busy professional</cite>
+      </div>
+      <div class="quote-pull">
+        <blockquote>"I want to buy what is good for the environment but sometimes it is unreasonably expensive."</blockquote>
+        <cite>Eco-conscious shopper</cite>
+      </div>
+      <div class="quote-pull">
+        <blockquote>"Food packages come in big portions and I can't finish it before the expiry date."</blockquote>
+        <cite>Waste-aware household</cite>
+      </div>
+    </div>
+
+    <div class="insight-grid">
+      <div class="insight-card">
+        <div class="insight-num">Finding 01 · Time</div>
+        <div class="insight-title">Cooking feels like a burden, not a choice</div>
+        <p class="insight-body">Participants with demanding schedules consistently defaulted to takeaway — not because they didn't want to cook, but because the time cost felt too high.</p>
+      </div>
+      <div class="insight-card">
+        <div class="insight-num">Finding 02 · Environment</div>
+        <div class="insight-title">Sustainable intent blocked by price &amp; access</div>
+        <p class="insight-body">Users wanted eco-friendly food choices but felt priced out. Sustainable options were seen as a luxury — access to affordable local alternatives was the missing bridge.</p>
+      </div>
+      <div class="insight-card">
+        <div class="insight-num">Finding 03 · Nutrition</div>
+        <div class="insight-title">Nutrition knowledge exists — follow-through doesn't</div>
+        <p class="insight-body">People knew what a balanced diet looked like but found it too effortful to track daily. The friction wasn't awareness — it was the constant cognitive load of checking and planning every meal.</p>
+      </div>
+      <div class="insight-card">
+        <div class="insight-num">Finding 04 · Waste</div>
+        <div class="insight-title">Food waste is habitual, not deliberate</div>
+        <p class="insight-body">Participants regularly bought more than they could eat, especially from supermarkets with large-format packaging. Waste happened by default — without tools to manage portions and expiry dates proactively.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 Personas -->
+  <section class="case-section reveal">
+    <div class="section-label"><span class="num">02</span> Synthesis &amp; Personas</div>
+    <h2 class="section-heading">Three archetypes,<br><em>one product.</em></h2>
+    <p class="body-text" style="margin-bottom:8px;">Affinity mapping organised findings into clusters. Aggregated empathy mapping then segmented users by shared behaviour, surfacing three archetypes — each shaped by a primary constraint.</p>
+
+    <div class="persona-grid">
+      <div class="persona-card">
+        <div class="persona-avatar">⏱</div>
+        <div class="persona-name">Steve</div>
+        <div class="persona-tag">Busy schedule</div>
+        <p class="persona-body">Working professional who relies on takeaway due to time pressure. Values convenience over everything. Wants healthy options but won't spend more than 30 mins cooking.</p>
+        <div class="persona-need"><strong>Needs →</strong>Quick recipes + in-context nutrition so he doesn't have to think.</div>
+      </div>
+      <div class="persona-card">
+        <div class="persona-avatar">🩺</div>
+        <div class="persona-name">Anna</div>
+        <div class="persona-tag">Health condition</div>
+        <p class="persona-body">Managing dietary restrictions that make meal planning complicated. Needs to track nutritional content closely but finds the process exhausting to maintain consistently.</p>
+        <div class="persona-need"><strong>Needs →</strong>Filtered recipes by dietary needs + automatic nutrition tracking.</div>
+      </div>
+      <div class="persona-card">
+        <div class="persona-avatar">💸</div>
+        <div class="persona-name">Javina</div>
+        <div class="persona-tag">Financial constraint</div>
+        <p class="persona-body">Eco-conscious and health-aware but budget-limited. Sustainable food options feel financially inaccessible. Frequently buys in bulk, leading to regular food waste.</p>
+        <div class="persona-need"><strong>Needs →</strong>Affordable local eco-options + waste management guidance.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 Design Process -->
+  <section class="case-section reveal">
+    <div class="section-label"><span class="num">03</span> Design Process</div>
+    <h2 class="section-heading">Concept to<br><em>high-fidelity.</em></h2>
+
+    <div class="process-steps">
+      <div class="process-step">
+        <div class="ps-date">Nov 2022</div>
+        <div class="ps-label">User Research</div>
+        <div class="ps-title">Interviews &amp; Observation</div>
+        <p class="ps-body">Semi-structured interviews (remote + in-person) covering lifestyle, diet, grocery habits, environmental awareness, kitchen behaviour and food waste. Six naturalistic observations — meal prep and grocery shopping.</p>
+        <div class="ps-tags"><span class="ps-tag">10 interviews</span><span class="ps-tag">6 observations</span><span class="ps-tag">naturalistic</span></div>
+      </div>
+      <div class="process-step">
+        <div class="ps-date">14 Nov 2022</div>
+        <div class="ps-label">Synthesis</div>
+        <div class="ps-title">Affinity Mapping</div>
+        <p class="ps-body">Affinity mapping organised findings into clusters. Aggregated empathy mapping segmented users by shared behaviour — surfacing three archetypes: busy schedules, health conditions, and financial constraints.</p>
+        <div class="ps-tags"><span class="ps-tag">affinity mapping</span><span class="ps-tag">empathy mapping</span><span class="ps-tag">3 personas</span></div>
+      </div>
+      <div class="process-step">
+        <div class="ps-date">Dec 2022</div>
+        <div class="ps-label">Conceptual Design</div>
+        <div class="ps-title">Journeys &amp; Storyboards</div>
+        <p class="ps-body">Future user journeys mapped each persona's path — actions, thoughts, feelings, and improvement opportunities — from pain point to goal. Storyboards then communicated objectives visually to build alignment.</p>
+        <div class="ps-tags"><span class="ps-tag">user journeys</span><span class="ps-tag">storyboards</span><span class="ps-tag">3 personas</span></div>
+      </div>
+      <div class="process-step">
+        <div class="ps-date">Dec 2022</div>
+        <div class="ps-label">Detailed Design</div>
+        <div class="ps-title">Lo-fi → Hi-fi</div>
+        <p class="ps-body">Paper sketches evolved into medium-fidelity Figma wireframes, then elevated to high-fidelity. Echo Show 10 (1280×800px) chosen for its camera tracking that physically rotates the screen to face the user while they cook.</p>
+        <div class="ps-tags"><span class="ps-tag">paper sketches</span><span class="ps-tag">mid-fi figma</span><span class="ps-tag">hi-fi</span></div>
+      </div>
+    </div>
+
+    <!-- Journey images -->
+    <div class="section-label" style="margin-top:48px; margin-bottom:20px;">User journeys</div>
+    <div class="img-grid">
+      <div class="img-card">
+        <img src="https://cdn.prod.website-files.com/65bbc9ddd8a6e6f1d0f60f55/65d653bbbc5d4e1803bab3fa_UserJ_steve.png" alt="User journey: Steve" loading="lazy">
+        <div class="img-caption">🗺 User journey — Steve (busy schedule)</div>
+      </div>
+      <div class="img-card">
+        <img src="https://cdn.prod.website-files.com/65bbc9ddd8a6e6f1d0f60f55/65d653bb8e99d0ed1c05824a_UserJ_anna.png" alt="User journey: Anna" loading="lazy">
+        <div class="img-caption">🗺 User journey — Anna (health condition)</div>
+      </div>
+      <div class="img-card">
+        <img src="https://cdn.prod.website-files.com/65bbc9ddd8a6e6f1d0f60f55/65d653bb65f923b21d92fd22_UserJ_jovina.png" alt="User journey: Javina" loading="lazy">
+        <div class="img-caption">🗺 User journey — Javina (financial constraint)</div>
+      </div>
+    </div>
+
+    <!-- Wireframe images -->
+    <div class="section-label" style="margin-top:48px; margin-bottom:20px;">Lo-fi wireframes</div>
+    <div class="img-grid">
+      <div class="img-card">
+        <img src="https://cdn.prod.website-files.com/65bbc9ddd8a6e6f1d0f60f55/6602d8ccbf35819c8723db12_PHOTO-2022-12-01-11-33-48%202.jpeg" alt="Paper sketch" loading="lazy">
+        <div class="img-caption">✏️ Lo-fi paper sketches</div>
+      </div>
+      <div class="img-card">
+        <img src="https://cdn.prod.website-files.com/65bbc9ddd8a6e6f1d0f60f55/6602d8e0051d9c9743245926_PHOTO-2022-12-01-11-33-47%203.jpeg" alt="Paper sketch 2" loading="lazy">
+        <div class="img-caption">✏️ Lo-fi paper sketches</div>
+      </div>
+      <div class="img-card">
+        <img src="https://cdn.prod.website-files.com/65bbc9ddd8a6e6f1d0f60f55/6602d8f37ca890a8525f56e9_PHOTO-2022-12-01-11-33-47%202.jpeg" alt="Paper sketch 3" loading="lazy">
+        <div class="img-caption">✏️ Lo-fi paper sketches</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 Final Design -->
+  <section class="case-section reveal">
+    <div class="section-label"><span class="num">04</span> Final Design</div>
+    <h2 class="section-heading">Three features,<br><em>one home screen.</em></h2>
+    <p class="body-text" style="margin-bottom:40px;">KitchenMate addresses all four pain points through three core features — each surfaced in context without adding friction. The home dashboard is the command centre.</p>
+
+    <!-- Hero screen -->
+    <div class="img-card" style="max-width:800px; margin-bottom:32px;">
+      <img src="https://cdn.prod.website-files.com/65bbc9ddd8a6e6f1d0f60f55/65fd80a78a1c685acc634dcb_Home%20With%20Waste%20Management.png" alt="KitchenMate home dashboard on Echo Show" loading="lazy" style="aspect-ratio:16/10; object-fit:cover;">
+      <div class="img-caption">✦ Home dashboard — the command centre on Amazon Echo Show 10</div>
+    </div>
+
+    <!-- Features -->
+    <div class="feature-row">
+      <div class="feature-emoji">🥦</div>
+      <div>
+        <div class="feature-title">Recipe Suggestions</div>
+        <p class="feature-desc">Healthy, easy-to-cook recipes with full nutrition and dietary info surfaced in-context — so users cook smarter without extra research. Filters by time, dietary needs, and what's already in the fridge. <strong>Solves: time + nutrition.</strong></p>
+      </div>
+    </div>
+    <div class="feature-row">
+      <div class="feature-emoji">♻️</div>
+      <div>
+        <div class="feature-title">Waste Management</div>
+        <p class="feature-desc">Personalised waste recommendations based on available space, tools and expertise — turning food waste into an actionable, not overwhelming, task. Lives on the home screen as a passive widget. <strong>Solves: waste.</strong></p>
+      </div>
+    </div>
+    <div class="feature-row">
+      <div class="feature-emoji">🌿</div>
+      <div>
+        <div class="feature-title">Local Sustainable Shopping</div>
+        <p class="feature-desc">Access to nearby eco-friendly shops, markets and events — affordable and relevant — surfaced exactly when the user needs it. Bridges the gap between eco-intent and financial reality. <strong>Solves: environment + access.</strong></p>
+      </div>
+    </div>
+
+    <!-- Core flow -->
+    <div class="section-label" style="margin-top:48px; margin-bottom:16px;">Core user flow</div>
+    <div class="flow-grid">
+      <div class="flow-item">
+        <div class="flow-num">01</div>
+        <div class="flow-title">Browse Recipes</div>
+        <p class="flow-body">Filtered by time, dietary needs, and fridge contents. Nutrition visible without clicking through.</p>
+        <span class="flow-tag">solves: time + nutrition</span>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">
+        <div class="flow-num">02</div>
+        <div class="flow-title">Cook with Guidance</div>
+        <p class="flow-body">Step-by-step instructions on the rotating screen — hands-free. Screen tracks the user so they never lose their place.</p>
+        <span class="flow-tag">solves: multitasking</span>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">
+        <div class="flow-num">03</div>
+        <div class="flow-title">Manage Waste</div>
+        <p class="flow-body">Personalised recommendations based on available space and tools — turning leftovers into a plan.</p>
+        <span class="flow-tag">solves: waste</span>
+      </div>
+    </div>
+
+    <!-- Screen shots -->
+    <div class="img-grid" style="margin-top:32px;">
+      <div class="img-card">
+        <img src="https://cdn.prod.website-files.com/65bbc9ddd8a6e6f1d0f60f55/65fd810398b826db9e836140_recipe%20page.png" alt="Recipe page" loading="lazy">
+        <div class="img-caption">Browse Recipes</div>
+      </div>
+      <div class="img-card">
+        <img src="https://cdn.prod.website-files.com/65bbc9ddd8a6e6f1d0f60f55/65fd811dd2def660533a5ce8_recipe%20page%20with%20details.png" alt="Recipe details" loading="lazy">
+        <div class="img-caption">Cook with Guidance</div>
+      </div>
+      <div class="img-card">
+        <img src="https://cdn.prod.website-files.com/65bbc9ddd8a6e6f1d0f60f55/65fd813abe1d51024fd846fa_Recommended%20Waste%20Management%20Method.png" alt="Waste management" loading="lazy">
+        <div class="img-caption">Manage Waste</div>
+      </div>
+    </div>
+    <div class="img-grid two" style="margin-top:16px;">
+      <div class="img-card">
+        <img src="https://cdn.prod.website-files.com/65bbc9ddd8a6e6f1d0f60f55/65fd8158b8e100df46975282_Groceries%20Page.png" alt="Groceries" loading="lazy">
+        <div class="img-caption">Groceries Page</div>
+      </div>
+      <div class="img-card">
+        <img src="https://cdn.prod.website-files.com/65bbc9ddd8a6e6f1d0f60f55/65fd818636fd6a3c05b1daa0_my%20profile.png" alt="Profile" loading="lazy">
+        <div class="img-caption">User Profile</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 Reflection -->
+  <section class="case-section reveal">
+    <div class="section-label"><span class="num">05</span> Retrospective</div>
+    <h2 class="section-heading">Strengths &amp;<br><em>areas for growth.</em></h2>
+    <div class="reflection-grid" style="margin-top:40px;">
+      <div class="refl-cell">
+        <div class="refl-header pos">✓ Strengths</div>
+        <div class="refl-item"><span class="refl-sym pos">+</span><span>Clear feedback after sign-up, building user trust from the very first interaction.</span></div>
+        <div class="refl-item"><span class="refl-sym pos">+</span><span>Scrollable touchscreen design optimised for Echo Show's interface paradigm and large display.</span></div>
+        <div class="refl-item"><span class="refl-sym pos">+</span><span>Strong research base — 10 interviews + 6 observations drove every decision with evidence.</span></div>
+        <div class="refl-item"><span class="refl-sym pos">+</span><span>Aggregated empathy mapping surfaced 3 distinct user archetypes that shaped the whole product direction.</span></div>
+      </div>
+      <div class="refl-cell">
+        <div class="refl-header neg">! Areas for growth</div>
+        <div class="refl-item"><span class="refl-sym neg">!</span><span>Lack of voice navigation for users with busy hands while cooking — a significant miss for the Echo Show platform.</span></div>
+        <div class="refl-item"><span class="refl-sym neg">!</span><span>Unimplemented interactions like a scrollbar, reducing visual feedback clarity.</span></div>
+        <div class="refl-item"><span class="refl-sym neg">!</span><span>Observations missed scenarios like composting — narrowing waste management insight scope.</span></div>
+        <div class="refl-item"><span class="refl-sym neg">!</span><span>Time constraints meant skipping paper prototype testing before moving to mid-fidelity.</span></div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /case-body -->
+
+<footer>
+  <div class="footer-top">
+    <div class="footer-big">Let's<br>work.</div>
+    <div class="footer-cta">
+      <span class="footer-cta-label">Next project</span>
+      <a href="thebreakroom.html" class="footer-btn">The Break Room →</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2025 Pornpawee Manyuen — UX Designer</span>
+    <ul class="footer-links">
+      <li><a href="https://www.behance.net/pornpawee-manyuen" target="_blank">Behance</a></li>
+      <li><a href="https://www.instagram.com/thereandthese/" target="_blank">Instagram</a></li>
+      <li><a href="https://www.linkedin.com/in/pornpawee-manyuen/" target="_blank">LinkedIn</a></li>
+      <li><a href="https://drive.google.com/file/d/14PsnhjjoBFldTPVjnW1V9XbGfqqdJeax/view" target="_blank">Résumé</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+var cur = document.getElementById('cursor');
+var mx=0,my=0,cx=0,cy=0;
+document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;});
+function lerp(a,b,t){return a+(b-a)*t;}
+(function tick(){cx=lerp(cx,mx,.18);cy=lerp(cy,my,.18);cur.style.left=cx+'px';cur.style.top=cy+'px';requestAnimationFrame(tick);})();
+document.querySelectorAll('a,button').forEach(function(el){
+  el.addEventListener('mouseenter',function(){cur.classList.add('grow');});
+  el.addEventListener('mouseleave',function(){cur.classList.remove('grow');});
+});
+document.addEventListener('mouseleave',function(){cur.classList.add('hidden');});
+document.addEventListener('mouseenter',function(){cur.classList.remove('hidden');});
+
+var io = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('visible');});
+},{threshold:.08});
+document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
+</script>
+</body>
+</html>
