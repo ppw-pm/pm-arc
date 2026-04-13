@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pornpawee Manyuen — UX Designer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Syne:wght@400;500;700;800&family=Syne+Mono&display=swap" rel="stylesheet">
+<style>
+
+/* ── Reset & Base ──────────────────────────────── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { font-size:16px; scroll-behavior:smooth; }
+
+:root {
+  --bg:     #f0ede6;
+  --ink:    #0f0e0b;
+  --muted:  #7a7570;
+  --line:   #d4d0c8;
+  --accent: #c8501a;
+  --white:  #faf9f6;
+  --serif:  'Instrument Serif', Georgia, serif;
+  --sans:   'Syne', sans-serif;
+  --mono:   'Syne Mono', monospace;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  cursor: none;
+  overflow-x: hidden;
+}
+
+/* ── Custom cursor ─────────────────────────────── */
+#cursor {
+  position: fixed;
+  width: 10px; height: 10px;
+  background: var(--ink);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: width .25s, height .25s, background .25s, opacity .15s;
+  mix-blend-mode: multiply;
+}
+#cursor.grow {
+  width: 48px; height: 48px;
+  background: var(--accent);
+}
+#cursor.hidden { opacity:0; }
+
+/* ── Nav ───────────────────────────────────────── */
+nav {
+  position: fixed; top:0; left:0; right:0; z-index: 500;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 28px 48px;
+  mix-blend-mode: multiply;
+}
+.nav-logo {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--ink);
+  text-decoration: none;
+  letter-spacing: .04em;
+}
+.nav-links {
+  display: flex; gap: 36px; list-style: none;
+}
+.nav-links a {
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+  opacity: .5;
+  transition: opacity .2s;
+}
+.nav-links a:hover { opacity: 1; }
+
+/* ── Hero ──────────────────────────────────────── */
+#hero {
+  min-height: 100vh;
+  padding: 0 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-bottom: 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-eyebrow {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.hero-eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 32px; height: 1px;
+  background: var(--muted);
+}
+
+.hero-name {
+  font-family: var(--serif);
+  font-size: clamp(72px, 10vw, 148px);
+  font-weight: 400;
+  line-height: .93;
+  letter-spacing: -.03em;
+  color: var(--ink);
+  margin-bottom: 48px;
+}
+.hero-name em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.hero-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-top: 1px solid var(--line);
+  padding-top: 28px;
+}
+.hero-desc {
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--muted);
+  max-width: 380px;
+}
+.hero-scroll {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  animation: scrollPulse 2.5s ease-in-out infinite;
+}
+@keyframes scrollPulse { 0%,100%{opacity:.4;} 50%{opacity:1;} }
+.scroll-tick {
+  width: 1px; height: 36px;
+  background: var(--muted);
+  display: block;
+}
+
+/* ── Marquee band ──────────────────────────────── */
+.marquee-wrap {
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  overflow: hidden;
+  padding: 14px 0;
+  background: var(--ink);
+  color: var(--bg);
+}
+.marquee-track {
+  display: flex;
+  gap: 0;
+  white-space: nowrap;
+  animation: marqueeRun 22s linear infinite;
+  will-change: transform;
+}
+@keyframes marqueeRun { from{transform:translateX(0);} to{transform:translateX(-50%);} }
+.marquee-item {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  padding: 0 32px;
+  opacity: .7;
+  flex-shrink: 0;
+}
+.marquee-sep { color: var(--accent); opacity:1 !important; }
+
+/* ── Projects ──────────────────────────────────── */
+#projects {
+  padding: 96px 48px;
+}
+
+.projects-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 64px;
+}
+.projects-title {
+  font-family: var(--serif);
+  font-size: clamp(36px,4vw,56px);
+  font-weight: 400;
+  font-style: italic;
+  color: var(--ink);
+}
+.projects-count {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: .1em;
+}
+
+/* Project rows */
+.project-list { list-style: none; }
+
+.project-item {
+  position: relative;
+}
+.project-link {
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  align-items: center;
+  gap: 32px;
+  padding: 28px 0;
+  border-top: 1px solid var(--line);
+  text-decoration: none;
+  color: inherit;
+  transition: padding-left .35s cubic-bezier(.23,1,.32,1);
+}
+.project-link:hover {
+  padding-left: 12px;
+}
+.project-item:last-child .project-link {
+  border-bottom: 1px solid var(--line);
+}
+
+.proj-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: .08em;
+}
+.proj-info {}
+.proj-tags {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+.proj-tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 3px 9px;
+  border: 1px solid var(--line);
+  transition: border-color .2s, color .2s;
+}
+.project-link:hover .proj-tag {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.proj-name {
+  font-family: var(--serif);
+  font-size: clamp(28px,3.5vw,48px);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -.02em;
+  color: var(--ink);
+  transition: color .2s;
+}
+.project-link:hover .proj-name { color: var(--accent); }
+.proj-desc {
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--muted);
+  max-width: 400px;
+  margin-top: 8px;
+}
+.proj-arrow {
+  font-size: 24px;
+  color: var(--muted);
+  transition: transform .3s cubic-bezier(.23,1,.32,1), color .2s;
+  opacity: 0;
+  transform: translateX(-12px) translateY(12px);
+}
+.project-link:hover .proj-arrow {
+  opacity: 1;
+  transform: translateX(0) translateY(0);
+  color: var(--accent);
+}
+
+/* Hover image floating */
+.hover-img {
+  position: fixed;
+  width: 260px;
+  aspect-ratio: 4/3;
+  pointer-events: none;
+  z-index: 200;
+  opacity: 0;
+  transform: rotate(-3deg) scale(.92);
+  transition: opacity .35s cubic-bezier(.23,1,.32,1), transform .35s cubic-bezier(.23,1,.32,1);
+  overflow: hidden;
+  border: 2px solid var(--ink);
+  background: var(--white);
+}
+.hover-img.visible {
+  opacity: 1;
+  transform: rotate(-1.5deg) scale(1);
+}
+.hover-img img, .hover-img .img-placeholder {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.img-placeholder {
+  background: var(--ink);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+.img-placeholder .ph-title {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-style: italic;
+  color: var(--bg);
+  text-align: center;
+  padding: 0 16px;
+  line-height: 1.2;
+}
+.img-placeholder .ph-tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+/* ── Divider quote ─────────────────────────────── */
+.quote-band {
+  background: var(--white);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 72px 48px;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 80px;
+  align-items: center;
+}
+.quote-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: .15em;
+  text-transform: uppercase;
+}
+.quote-text {
+  font-family: var(--serif);
+  font-size: clamp(26px,2.8vw,40px);
+  font-weight: 400;
+  line-height: 1.3;
+  color: var(--ink);
+  letter-spacing: -.01em;
+}
+.quote-text em { font-style: italic; color: var(--accent); }
+
+/* ── About ─────────────────────────────────────── */
+#about {
+  padding: 96px 48px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 96px;
+  align-items: start;
+}
+
+.about-sticky {
+  position: sticky;
+  top: 120px;
+}
+.about-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+}
+.about-heading {
+  font-family: var(--serif);
+  font-size: clamp(42px,5vw,72px);
+  font-weight: 400;
+  line-height: .95;
+  letter-spacing: -.03em;
+  color: var(--ink);
+  margin-bottom: 40px;
+}
+.about-heading em { font-style: italic; }
+
+.stats-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  margin-top: 48px;
+}
+.stat {
+  background: var(--bg);
+  padding: 20px 18px;
+}
+.stat-num {
+  font-family: var(--serif);
+  font-size: 32px;
+  font-style: italic;
+  color: var(--accent);
+  display: block;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.stat-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.about-body p {
+  font-size: 15px;
+  line-height: 1.85;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+.about-body strong { color: var(--ink); font-weight: 500; }
+.about-body .em { color: var(--accent); }
+
+.skills-section { margin-top: 48px; }
+.skills-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 10px;
+}
+.skills-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.skill {
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 6px 14px;
+  border: 1px solid var(--line);
+  color: var(--ink);
+  letter-spacing: .05em;
+  cursor: default;
+  transition: background .2s, color .2s, border-color .2s;
+}
+.skill:hover {
+  background: var(--ink);
+  color: var(--bg);
+  border-color: var(--ink);
+}
+
+/* ── Footer ────────────────────────────────────── */
+footer {
+  background: var(--ink);
+  padding: 80px 48px 48px;
+  color: var(--bg);
+}
+.footer-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 80px;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+.footer-big {
+  font-family: var(--serif);
+  font-size: clamp(48px,7vw,112px);
+  font-weight: 400;
+  font-style: italic;
+  line-height: .9;
+  letter-spacing: -.04em;
+  color: var(--bg);
+}
+.footer-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 20px;
+  padding-top: 12px;
+}
+.footer-cta-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: rgba(255,255,255,.4);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.footer-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: var(--bg);
+  text-decoration: none;
+  padding: 14px 28px;
+  transition: background .2s, color .2s;
+}
+.footer-btn:hover {
+  background: var(--accent);
+  color: var(--white);
+}
+
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,.1);
+  padding-top: 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.footer-copy {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: rgba(255,255,255,.3);
+  letter-spacing: .05em;
+}
+.footer-links {
+  display: flex;
+  gap: 28px;
+  list-style: none;
+}
+.footer-links a {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.5);
+  text-decoration: none;
+  transition: color .2s;
+}
+.footer-links a:hover { color: var(--bg); }
+
+/* ── Reveal animation ──────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity .7s cubic-bezier(.23,1,.32,1), transform .7s cubic-bezier(.23,1,.32,1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-d1 { transition-delay: .1s; }
+.reveal-d2 { transition-delay: .2s; }
+.reveal-d3 { transition-delay: .3s; }
+
+/* Availability badge */
+.avail-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: #2d7a3a;
+  background: rgba(45,122,58,.1);
+  border: 1px solid rgba(45,122,58,.25);
+  padding: 5px 12px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.avail-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #2d7a3a;
+  animation: dotPulse 1.8s ease-in-out infinite;
+}
+@keyframes dotPulse {
+  0%,100%{opacity:1;transform:scale(1);}
+  50%{opacity:.5;transform:scale(.7);}
+}
+
+/* ── Hero intro text animation ─────────────────── */
+.char {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(28px);
+  animation: charIn .6s cubic-bezier(.23,1,.32,1) forwards;
+}
+@keyframes charIn {
+  to { opacity:1; transform:translateY(0); }
+}
+
+/* ── Mortar & Pestle Widget ────────────────────── */
+.mortar-section {
+  padding: 0 48px 96px;
+}
+.mortar-intro {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 40px;
+  border-top: 1px solid var(--line);
+  padding-top: 28px;
+}
+.mortar-intro-title {
+  font-family: var(--serif);
+  font-size: clamp(22px, 2.5vw, 32px);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--ink);
+}
+.mortar-intro-sub {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.mortar-widget {
+  background: var(--white);
+  border: 1px solid var(--line);
+  max-width: 640px;
+}
+.mortar-widget-bar {
+  background: var(--ink);
+  padding: 10px 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.mw-dot { width: 9px; height: 9px; border-radius: 50%; }
+.mw-dot.r{background:#ff5f57;} .mw-dot.y{background:#ffbd2e;} .mw-dot.g{background:#28ca41;}
+.mw-title {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: rgba(255,255,255,.4);
+  margin: 0 auto;
+  letter-spacing: .08em;
+}
+.mortar-widget-body { padding: 28px 32px 32px; }
+
+.mw-prompt {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 20px;
+  letter-spacing: .04em;
+}
+.mw-prompt .acc { color: var(--accent); font-weight: 500; }
+.mw-prompt .cmd { color: var(--ink); }
+
+.mw-shelf-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.mw-ingredients {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 28px;
+  min-height: 36px;
+}
+.mw-ingredient {
+  font-family: var(--mono);
+  font-size: 11px;
+  border: 1px solid var(--line);
+  color: var(--ink);
+  padding: 5px 13px;
+  cursor: pointer;
+  transition: all .15s;
+  user-select: none;
+  letter-spacing: .04em;
+  background: transparent;
+}
+.mw-ingredient:hover:not(.used) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.mw-ingredient.used {
+  border-color: var(--line);
+  color: var(--muted);
+  cursor: default;
+  opacity: .45;
+  text-decoration: line-through;
+}
+
+.mw-mortar-row {
+  display: flex;
+  gap: 28px;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+.mw-ascii {
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--muted);
+  white-space: pre;
+  flex-shrink: 0;
+  transition: color .4s;
+}
+.mw-ascii.active { color: var(--ink); }
+.mw-ascii.grinding { color: var(--accent); }
+
+.mw-log {
+  flex: 1;
+  min-height: 88px;
+}
+.mw-log-line {
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.9;
+  color: var(--muted);
+  animation: mwFadeIn .3s ease;
+}
+@keyframes mwFadeIn { from{opacity:0;transform:translateY(4px);} to{opacity:1;transform:translateY(0);} }
+.mw-log-line .plus { color: var(--accent); margin-right: 6px; }
+
+.mw-bar-wrap { margin-bottom: 20px; }
+.mw-bar-meta {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: .08em;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 7px;
+}
+.mw-bar-bg {
+  height: 3px;
+  background: var(--line);
+  overflow: hidden;
+}
+.mw-bar-fill {
+  height: 100%;
+  background: var(--ink);
+  transition: width .5s cubic-bezier(.4,0,.2,1);
+  width: 0%;
+}
+.mw-bar-fill.done { background: var(--accent); }
+
+.mw-result {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+  padding: 18px 20px;
+  display: none;
+  animation: mwFadeIn .5s ease;
+}
+.mw-result.show { display: block; }
+.mw-result-comment {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: .06em;
+  font-style: italic;
+  margin-bottom: 10px;
+}
+.mw-result-line {
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.9;
+}
+.mw-result-line .key { color: var(--accent); }
+.mw-result-line .val { color: var(--ink); }
+.mw-result-line .note { color: var(--muted); font-style: italic; font-size: 11px; }
+
+.mw-reset {
+  margin-top: 18px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  background: transparent;
+  padding: 8px 18px;
+  cursor: pointer;
+  transition: all .2s;
+  display: none;
+}
+.mw-reset:hover { border-color: var(--ink); color: var(--ink); }
+.mw-reset.show { display: inline-block; }
+
+/* mobile */
+@media(max-width:768px){
+  .mortar-section{padding: 0 24px 64px;}
+  .mortar-intro{flex-direction:column;gap:10px;}
+}
+
+/* mobile */
+@media(max-width:768px){
+  nav{padding:20px 24px;}
+  #hero{padding:0 24px 64px;}
+  #projects{padding:64px 24px;}
+  #about{padding:64px 24px; grid-template-columns:1fr; gap:48px;}
+  .about-sticky{position:static;}
+  .quote-band{padding:48px 24px; grid-template-columns:1fr; gap:24px;}
+  footer{padding:60px 24px 40px;}
+  .footer-big{font-size:clamp(40px,10vw,80px);}
+  .footer-cta{align-items:flex-start;}
+  .projects-header{flex-direction:column;gap:12px;}
+  .project-link{grid-template-columns:40px 1fr auto;}
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+
+<!-- Floating hover image -->
+<div class="hover-img" id="hoverImg">
+  <div class="img-placeholder" id="hoverPlaceholder">
+    <span class="ph-title" id="hoverTitle"></span>
+    <span class="ph-tag" id="hoverTag"></span>
+  </div>
+</div>
+
+<!-- Nav -->
+<nav>
+  <a href="#" class="nav-logo">pm — ux designer</a>
+  <ul class="nav-links">
+    <li><a href="#projects">Work</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="https://drive.google.com/file/d/14PsnhjjoBFldTPVjnW1V9XbGfqqdJeax/view" target="_blank">Résumé</a></li>
+  </ul>
+</nav>
+
+<!-- Hero -->
+<section id="hero">
+  <div class="hero-eyebrow">
+    <span class="avail-badge"><span class="avail-dot"></span>Available for work</span>
+    <span style="margin-left:4px;">UX Designer · HCID · Bangkok &amp; beyond</span>
+  </div>
+
+  <h1 class="hero-name" id="heroName" aria-label="Pornpawee Manyuen">
+    Pornpawee<br><em>Manyuen</em>
+  </h1>
+
+  <div class="hero-bottom">
+    <p class="hero-desc">
+      Bridging linguistics &amp; technology to design
+      human-centred digital experiences — from SEA's leading OTA
+      to global social platforms.
+    </p>
+    <div class="hero-scroll">
+      <span class="scroll-tick"></span>
+      <span>Scroll</span>
+    </div>
+  </div>
+</section>
+
+<!-- Marquee -->
+<div class="marquee-wrap">
+  <div class="marquee-track" id="marquee">
+    <!-- filled by JS -->
+  </div>
+</div>
+
+<!-- Projects -->
+<section id="projects">
+  <div class="projects-header reveal">
+    <h2 class="projects-title">Selected work</h2>
+    <span class="projects-count">003 projects</span>
+  </div>
+
+  <ul class="project-list">
+
+    <li class="project-item reveal reveal-d1"
+        data-title="The Break Room"
+        data-tag="Product Design · Web App">
+      <a class="project-link"
+         href="https://v0-break-room-app.vercel.app/"
+         target="_blank">
+        <span class="proj-num">001</span>
+        <div class="proj-info">
+          <div class="proj-tags">
+            <span class="proj-tag">Product Design</span>
+            <span class="proj-tag">Web App</span>
+          </div>
+          <div class="proj-name">The Break Room</div>
+          <p class="proj-desc">A space for people to relieve anxiety and frustration when they need it most. Emotional design meeting functional UX.</p>
+        </div>
+        <span class="proj-arrow">↗</span>
+      </a>
+    </li>
+
+    <li class="project-item reveal reveal-d2"
+        data-title="KitchenMate"
+        data-tag="UX Design · UX Writing">
+      <a class="project-link" href="#" target="_blank">
+        <span class="proj-num">002</span>
+        <div class="proj-info">
+          <div class="proj-tags">
+            <span class="proj-tag">UX Design</span>
+            <span class="proj-tag">User Research</span>
+            <span class="proj-tag">UX Writing</span>
+          </div>
+          <div class="proj-name">KitchenMate</div>
+          <p class="proj-desc">End-to-end design promoting healthy living and sustainability — for Echo Show and mobile.</p>
+        </div>
+        <span class="proj-arrow">↗</span>
+      </a>
+    </li>
+
+    <li class="project-item reveal reveal-d3"
+        data-title="Behance"
+        data-tag="UI · Visual Design">
+      <a class="project-link"
+         href="https://www.behance.net/pornpawee-manyuen"
+         target="_blank">
+        <span class="proj-num">003</span>
+        <div class="proj-info">
+          <div class="proj-tags">
+            <span class="proj-tag">UI Design</span>
+            <span class="proj-tag">Visual Design</span>
+          </div>
+          <div class="proj-name">More on Behance</div>
+          <p class="proj-desc">UI-focused work — interfaces, visual design, and product explorations.</p>
+        </div>
+        <span class="proj-arrow">↗</span>
+      </a>
+    </li>
+
+  </ul>
+</section>
+
+<!-- Mortar & Pestle -->
+<section class="mortar-section reveal">
+  <div class="mortar-intro">
+    <span class="mortar-intro-title">A little about how I think</span>
+    <span class="mortar-intro-sub">Interactive · Thai-inspired</span>
+  </div>
+
+  <div class="mortar-widget">
+    <div class="mortar-widget-bar">
+      <div class="mw-dot r"></div><div class="mw-dot y"></div><div class="mw-dot g"></div>
+      <span class="mw-title">ux-mortar.sh — grind your ingredients</span>
+    </div>
+    <div class="mortar-widget-body">
+
+      <div class="mw-prompt">
+        <span class="acc">$ </span><span class="cmd">grind --ingredients</span> <span style="color:var(--muted);">./thai-kitchen/ &nbsp;# pick 4 to reveal a UX insight</span>
+      </div>
+
+      <div class="mw-shelf-label">// available ingredients — click to add</div>
+      <div class="mw-ingredients" id="mwShelf"></div>
+
+      <div class="mw-mortar-row">
+        <pre class="mw-ascii" id="mwAscii">   ____
+  /    \
+ / ____ \
+| |    | |
+|_|____|_|
+  \____/</pre>
+        <div class="mw-log" id="mwLog">
+          <div class="mw-log-line" style="color:var(--muted);font-style:italic;">// mortar is empty — add ingredients above</div>
+        </div>
+      </div>
+
+      <div class="mw-bar-wrap">
+        <div class="mw-bar-meta">
+          <span>grinding progress</span>
+          <span id="mwCount">0 / 4 ingredients</span>
+        </div>
+        <div class="mw-bar-bg"><div class="mw-bar-fill" id="mwFill"></div></div>
+      </div>
+
+      <div class="mw-result" id="mwResult"></div>
+      <button class="mw-reset" id="mwReset" onclick="mwReset()">$ reset --mortar</button>
+
+    </div>
+  </div>
+</section>
+
+<!-- Quote band -->
+<div class="quote-band">
+  <span class="quote-label reveal">Design philosophy</span>
+  <blockquote class="quote-text reveal reveal-d1">
+    Great design lives in the details you <em>don't notice</em> — the word choice in a tooltip, the rhythm of an onboarding flow, the moment a user says "oh, that just works."
+  </blockquote>
+</div>
+
+<!-- About -->
+<section id="about">
+  <div class="about-sticky reveal">
+    <div class="about-label">About me</div>
+    <h2 class="about-heading">Human<br><em>language</em><br>meets tech.</h2>
+
+    <div class="stats-row">
+      <div class="stat"><span class="stat-num">M.Sc.</span><span class="stat-label">HCID</span></div>
+      <div class="stat"><span class="stat-num">3+</span><span class="stat-label">Years exp.</span></div>
+      <div class="stat"><span class="stat-num">SEA</span><span class="stat-label">Top OTA</span></div>
+      <div class="stat"><span class="stat-num">글로벌</span><span class="stat-label">Social platform</span></div>
+    </div>
+  </div>
+
+  <div class="about-body reveal reveal-d1">
+    <p>I'm <strong>Pornpawee Manyuen</strong> — a UX designer with a deep love for the space where human language meets technology. My background in <span class="em">linguistics</span> gives me a unique lens for understanding how people communicate and interact with systems.</p>
+    <p>After my <strong>Master's in HCID</strong>, I've worked across industries — from Southeast Asia's largest OTA to a global social media platform — crafting experiences that are as intuitive as they are meaningful.</p>
+    <p>I believe in <strong>research-grounded design</strong>: listening carefully, testing often, and always advocating for the person on the other side of the screen.</p>
+
+    <div class="skills-section">
+      <div class="skills-label">Skills &amp; tools</div>
+      <div class="skills-grid">
+        <span class="skill">Figma</span>
+        <span class="skill">User Research</span>
+        <span class="skill">Prototyping</span>
+        <span class="skill">UX Writing</span>
+        <span class="skill">Info Architecture</span>
+        <span class="skill">Usability Testing</span>
+        <span class="skill">Interaction Design</span>
+        <span class="skill">Design Systems</span>
+        <span class="skill">Linguistics</span>
+        <span class="skill">Webflow</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-big">Let's<br>work.</div>
+    <div class="footer-cta">
+      <span class="footer-cta-label">Currently available</span>
+      <a href="https://www.linkedin.com/in/pornpawee-manyuen/" target="_blank" class="footer-btn">
+        Say hello →
+      </a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2025 Pornpawee Manyuen — UX Designer</span>
+    <ul class="footer-links">
+      <li><a href="https://www.behance.net/pornpawee-manyuen" target="_blank">Behance</a></li>
+      <li><a href="https://www.instagram.com/thereandthese/" target="_blank">Instagram</a></li>
+      <li><a href="https://www.linkedin.com/in/pornpawee-manyuen/" target="_blank">LinkedIn</a></li>
+      <li><a href="https://drive.google.com/file/d/14PsnhjjoBFldTPVjnW1V9XbGfqqdJeax/view" target="_blank">Résumé</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+/* ── Cursor ── */
+var cur = document.getElementById('cursor');
+var mx=0,my=0, cx=0,cy=0;
+document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;});
+function lerp(a,b,t){return a+(b-a)*t;}
+(function animCursor(){
+  cx=lerp(cx,mx,.18); cy=lerp(cy,my,.18);
+  cur.style.left=cx+'px'; cur.style.top=cy+'px';
+  requestAnimationFrame(animCursor);
+})();
+document.querySelectorAll('a, button, .skill').forEach(function(el){
+  el.addEventListener('mouseenter',function(){cur.classList.add('grow');});
+  el.addEventListener('mouseleave',function(){cur.classList.remove('grow');});
+});
+document.addEventListener('mouseleave',function(){cur.classList.add('hidden');});
+document.addEventListener('mouseenter',function(){cur.classList.remove('hidden');});
+
+/* ── Hover floating image ── */
+var hoverImg  = document.getElementById('hoverImg');
+var hoverTitle= document.getElementById('hoverTitle');
+var hoverTag  = document.getElementById('hoverTag');
+var hx=0,hy=0,hactive=false;
+
+document.querySelectorAll('.project-item').forEach(function(item){
+  item.addEventListener('mouseenter',function(e){
+    hoverTitle.textContent = item.dataset.title || '';
+    hoverTag.textContent   = item.dataset.tag   || '';
+    hoverImg.classList.add('visible');
+    hactive=true;
+  });
+  item.addEventListener('mouseleave',function(){
+    hoverImg.classList.remove('visible');
+    hactive=false;
+  });
+});
+
+var trot = 0;
+document.addEventListener('mousemove',function(e){
+  hx=e.clientX; hy=e.clientY;
+  var r = ((e.clientX/window.innerWidth)-.5)*6;
+  hoverImg.style.left = (hx+28)+'px';
+  hoverImg.style.top  = (hy-80)+'px';
+  hoverImg.style.transform = 'rotate('+r+'deg) scale('+(hactive?1:.92)+')';
+});
+
+/* ── Marquee ── */
+var items = ['UX Design','User Research','Interaction Design','UX Writing','Linguistics','Prototyping','Design Systems','HCID','Figma','Usability Testing'];
+var track = document.getElementById('marquee');
+var full  = '';
+for(var r=0;r<4;r++){
+  items.forEach(function(t,i){
+    full += '<span class="marquee-item">'+(i%3===1?'<span class="marquee-sep">✦</span> ':'')+t+'</span>';
+  });
+}
+track.innerHTML = full + full; // duplicate for seamless loop
+
+/* ── Scroll reveal ── */
+var io = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(e.isIntersecting) e.target.classList.add('visible');
+  });
+},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+
+/* ── Hero name char stagger ── */
+var nameEl = document.getElementById('heroName');
+var raw = nameEl.innerHTML;
+// We do a simpler approach: just fade+slide lines
+nameEl.style.opacity='0';
+setTimeout(function(){
+  nameEl.style.transition='opacity .01s';
+  nameEl.style.opacity='1';
+  var lines = nameEl.querySelectorAll('br');
+  // Animate the whole heading in two waves
+  nameEl.style.opacity='1';
+  nameEl.style.transform='translateY(40px)';
+  nameEl.style.transition='opacity .8s cubic-bezier(.23,1,.32,1), transform .8s cubic-bezier(.23,1,.32,1)';
+  requestAnimationFrame(function(){
+    requestAnimationFrame(function(){
+      nameEl.style.transform='translateY(0)';
+    });
+  });
+},200);
+/* ── Mortar & Pestle Widget ── */
+(function(){
+  var INGREDIENTS = [
+    { name: "lemongrass",      thai: "ตะไคร้" },
+    { name: "galangal",        thai: "ข่า" },
+    { name: "kaffir lime",     thai: "มะกรูด" },
+    { name: "bird's eye chilli", thai: "พริก" },
+    { name: "shrimp paste",    thai: "กะปิ" },
+    { name: "coriander root",  thai: "รากผักชี" },
+    { name: "garlic",          thai: "กระเทียม" },
+  ];
+
+  var RECIPES = [
+    {
+      needs: ["lemongrass","galangal","kaffir lime","bird's eye chilli"],
+      title: "output: tom_yum_empathy.paste",
+      lines: [
+        { key: "insight", val: '"users speak in layers — listen past the surface"' },
+        { key: "method",  val: '"contextual inquiry + open-ended questions"' },
+        { key: "flavour", val: '"sharp, aromatic, deeply complex"' },
+        { note: "// great UX research smells like good tom yum — layered." }
+      ]
+    },
+    {
+      needs: ["shrimp paste","coriander root","garlic","bird's eye chilli"],
+      title: "output: green_curry_flow.paste",
+      lines: [
+        { key: "insight", val: '"strong foundations let bold ideas shine"' },
+        { key: "method",  val: '"design systems + component thinking"' },
+        { key: "flavour", val: '"bold, grounding, unmistakably intentional"' },
+        { note: "// good design systems are like good curry paste — invisible, essential." }
+      ]
+    },
+    {
+      needs: ["galangal","kaffir lime","garlic","coriander root"],
+      title: "output: som_tum_clarity.paste",
+      lines: [
+        { key: "insight", val: '"contrast makes meaning — bold against subtle"' },
+        { key: "method",  val: '"usability testing + information architecture"' },
+        { key: "flavour", val: '"tart, crunchy, refreshingly clear"' },
+        { note: "// clarity in UX writing is the papaya salad of design." }
+      ]
+    },
+    {
+      needs: null, // fallback
+      title: "output: mystery_paste.exe",
+      lines: [
+        { key: "result",  val: '"unexpected combination — a new flavour discovered"' },
+        { key: "skill",   val: '"curiosity + willingness to experiment"' },
+        { key: "flavour", val: '"surprisingly good, honestly"' },
+        { note: "// the best UX insights come from unexpected mixes." }
+      ]
+    }
+  ];
+
+  var added = [], ground = false, NEEDED = 4;
+  var ascii  = document.getElementById('mwAscii');
+  var log    = document.getElementById('mwLog');
+  var fill   = document.getElementById('mwFill');
+  var count  = document.getElementById('mwCount');
+  var result = document.getElementById('mwResult');
+  var resetBtn = document.getElementById('mwReset');
+  var shelf  = document.getElementById('mwShelf');
+
+  function buildShelf(){
+    shelf.innerHTML = '';
+    INGREDIENTS.forEach(function(ing){
+      var el = document.createElement('div');
+      el.className = 'mw-ingredient' + (added.includes(ing.name) ? ' used' : '');
+      el.textContent = ing.name;
+      el.addEventListener('click', function(){ addIng(ing, el); });
+      shelf.appendChild(el);
+    });
+  }
+
+  function addIng(ing, el){
+    if(added.includes(ing.name) || ground) return;
+    added.push(ing.name);
+    el.classList.add('used');
+    if(added.length === 1) log.innerHTML = '';
+    var line = document.createElement('div');
+    line.className = 'mw-log-line';
+    line.innerHTML = '<span class="plus">+</span>' + ing.thai + ' (' + ing.name + ')';
+    log.appendChild(line);
+    if(added.length >= 1) ascii.classList.add('active');
+    fill.style.width = Math.min(added.length / NEEDED * 100, 100) + '%';
+    count.textContent = added.length + ' / ' + NEEDED + ' ingredients';
+    if(added.length >= NEEDED) grind();
+  }
+
+  function grind(){
+    ground = true;
+    ascii.className = 'mw-ascii grinding';
+    ascii.textContent = '   ~~~~\n  / ~~~~ \\\n / ~pestle ~\\\n| | grind | |\n|_|~~~~~~~~|\n  \\~~~~~/';
+    fill.classList.add('done');
+    count.textContent = 'grinding…';
+    setTimeout(function(){
+      ascii.textContent = '   ____\n  / ░░░░ \\\n / ░paste░ \\\n| |  ✓   | |\n|_|______|\n  \\____/';
+      count.textContent = 'done ✓';
+      var recipe = RECIPES.find(function(r){ return r.needs && r.needs.every(function(n){ return added.includes(n); }); }) || RECIPES[RECIPES.length-1];
+      showResult(recipe);
+      resetBtn.classList.add('show');
+    }, 900);
+  }
+
+  function showResult(recipe){
+    var html = '<div class="mw-result-comment">// ' + recipe.title + '</div>';
+    recipe.lines.forEach(function(line){
+      if(line.note){
+        html += '<div class="mw-result-line"><span class="note">' + line.note + '</span></div>';
+      } else {
+        html += '<div class="mw-result-line"><span class="key">' + line.key + '</span> = <span class="val">' + line.val + '</span></div>';
+      }
+    });
+    result.innerHTML = html;
+    result.classList.add('show');
+  }
+
+  window.mwReset = function(){
+    added = []; ground = false;
+    fill.style.width = '0%'; fill.classList.remove('done');
+    count.textContent = '0 / 4 ingredients';
+    ascii.className = 'mw-ascii';
+    ascii.textContent = '   ____\n  /    \\\n / ____ \\\n| |    | |\n|_|____|_|\n  \\____/';
+    log.innerHTML = '<div class="mw-log-line" style="color:var(--muted);font-style:italic;">// mortar is empty — add ingredients above</div>';
+    result.innerHTML = ''; result.classList.remove('show');
+    resetBtn.classList.remove('show');
+    buildShelf();
+  };
+
+  buildShelf();
+})();
+</script>
+</body>
+</html>
