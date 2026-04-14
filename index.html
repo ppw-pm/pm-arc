@@ -977,7 +977,7 @@ footer {
       <div class="mw-ingredients" id="mwShelf"></div>
 
       <div class="mw-mortar-row">
-       <img id="mwMortar" src="portfolio-favicon.png" alt="Mortar & Pestle" class="mw-mortar">
+       <img id="mwMortar" src="portfolio-favicon.png" data-default="portfolio-favicon.png" data-done="mortar-paste.png" alt="Mortar & Pestle" class="mw-mortar">
         <div class="mw-log" id="mwLog">
           <div class="mw-log-line" style="color:var(--muted);font-style:italic;">// mortar is empty — add ingredients above</div>
         </div>
@@ -1244,6 +1244,7 @@ var added = [], ground = false, NEEDED = 4;
     fill.classList.add('done');
     count.textContent = 'grinding…';
     setTimeout(function(){
+      mwMortar.src = mwMortar.dataset.done;
       mwMortar.className = 'mw-mortar done';
       count.textContent = 'done ✓';
       var recipe = RECIPES.find(function(r){ return r.needs && r.needs.every(function(n){ return added.includes(n); }); }) || RECIPES[RECIPES.length-1];
@@ -1267,6 +1268,7 @@ var added = [], ground = false, NEEDED = 4;
     added = []; ground = false;
     fill.style.width = '0%'; fill.classList.remove('done');
     count.textContent = '0 / 4 ingredients';
+    mwMortar.src = mwMortar.dataset.default;
     mwMortar.className = 'mw-mortar';
     log.innerHTML = '<div class="mw-log-line" style="color:var(--muted);font-style:italic;">// mortar is empty — add ingredients above</div>';
     result.innerHTML = ''; result.classList.remove('show');
