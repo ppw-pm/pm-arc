@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pomomelto — Pornpawee Manyuen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Poppins:wght@300;400;500;600;700&family=Syne+Mono&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { font-size:16px; scroll-behavior:smooth; }
+
+:root {
+  --bg:       #f0ede6;
+  --ink:      #0f0e0b;
+  --muted:    #7a7570;
+  --line:     #d4d0c8;
+  --accent:   #c8501a;
+  --white:    #faf9f6;
+  /* Pomomelto brand colours */
+  --sage:     #7A9668;
+  --sage-bg:  #9CAF88;
+  --sage-lt:  #D1E8D1;
+  --sage-dk:  #5C724A;
+  --bluegray: #7A8BBB;
+  --bg-gray:  #B8CEE8;
+  --cream:    #F0EAD8;
+  --serif:    'Instrument Serif', Georgia, serif;
+  --sans:     'Poppins', sans-serif;
+  --mono:     'Syne Mono', monospace;
+}
+
+body { background:var(--bg); color:var(--ink); font-family:var(--sans); cursor:none; overflow-x:hidden; }
+
+/* cursor */
+#cursor { position:fixed; width:10px; height:10px; background:var(--ink); border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:width .25s,height .25s,background .25s,opacity .15s; mix-blend-mode:multiply; }
+#cursor.grow { width:48px; height:48px; background:var(--sage); }
+#cursor.hidden { opacity:0; }
+
+/* nav */
+nav { position:fixed; top:0; left:0; right:0; z-index:500; display:flex; justify-content:space-between; align-items:center; padding:28px 48px; mix-blend-mode:multiply; }
+.nav-logo { font-family:var(--mono); font-size:13px; color:var(--ink); text-decoration:none; letter-spacing:.04em; }
+.nav-links { display:flex; gap:36px; list-style:none; }
+.nav-links a { font-size:12px; font-weight:500; letter-spacing:.12em; text-transform:uppercase; color:var(--ink); text-decoration:none; opacity:.5; transition:opacity .2s; }
+.nav-links a:hover { opacity:1; }
+
+/* ── Hero ────────────────────────────────────────── */
+.case-hero {
+  min-height: 90vh;
+  padding: 160px 48px 80px;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  position: relative; overflow: hidden;
+  border-bottom: 1px solid var(--line);
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background: linear-gradient(160deg, #ddecd4 0%, var(--bg) 65%);
+  pointer-events: none;
+}
+/* Decorative ice cubes — pure CSS */
+.ice-deco {
+  position: absolute; top: 100px; right: 80px;
+  width: 280px; height: 280px; pointer-events: none; opacity: .35;
+}
+.ice-cube {
+  position: absolute;
+  border-radius: 38% 62% 55% 45% / 42% 48% 52% 58%;
+  background: rgba(255,255,255,.55);
+  border: 1px solid rgba(255,255,255,.8);
+  backdrop-filter: blur(2px);
+}
+.ice-cube.a { width:120px; height:110px; top:60px; left:30px; transform:rotate(-15deg); }
+.ice-cube.b { width:105px; height:100px; top:20px; left:110px; transform:rotate(10deg); }
+.ice-cube.c { width:100px; height:95px; top:90px; left:90px; transform:rotate(-5deg); }
+
+.case-eyebrow { font-family:var(--mono); font-size:12px; color:var(--muted); letter-spacing:.12em; text-transform:uppercase; margin-bottom:24px; position:relative; z-index:1; display:flex; align-items:center; gap:16px; }
+.case-eyebrow a { color:var(--muted); text-decoration:none; transition:color .2s; }
+.case-eyebrow a:hover { color:var(--sage); }
+.case-eyebrow-sep { color:var(--line); }
+
+.case-title { font-family:var(--serif); font-size:clamp(64px,10vw,148px); font-weight:400; line-height:.9; letter-spacing:-.03em; color:var(--ink); margin-bottom:48px; position:relative; z-index:1; }
+.case-title em { font-style:italic; color:var(--sage-dk); }
+
+.case-meta { display:grid; grid-template-columns:repeat(5,auto) 1fr; gap:0; border-top:1px solid var(--line); padding-top:28px; position:relative; z-index:1; }
+.meta-item { padding:0 32px 0 0; border-right:1px solid var(--line); margin-right:32px; }
+.meta-item:last-of-type { border-right:none; }
+.meta-label { font-family:var(--mono); font-size:10px; color:var(--muted); letter-spacing:.1em; text-transform:uppercase; margin-bottom:6px; }
+.meta-val { font-size:13px; font-weight:500; color:var(--ink); }
+.case-cta { display:inline-flex; align-items:center; gap:10px; font-size:12px; font-weight:500; letter-spacing:.1em; text-transform:uppercase; color:var(--white); background:var(--sage-dk); text-decoration:none; padding:13px 24px; transition:background .2s; align-self:flex-end; justify-self:end; grid-column:-1; }
+.case-cta:hover { background:var(--ink); }
+
+/* ── Body ────────────────────────────────────────── */
+.case-body { max-width:1200px; margin:0 auto; padding:0 48px; }
+.case-section { padding:80px 0; border-bottom:1px solid var(--line); }
+.case-section:last-child { border-bottom:none; }
+
+.section-label { font-family:var(--mono); font-size:11px; letter-spacing:.15em; text-transform:uppercase; color:var(--muted); margin-bottom:40px; display:flex; align-items:center; gap:16px; }
+.section-label::before { content:''; display:inline-block; width:24px; height:1px; background:var(--muted); }
+.section-label .num { color:var(--sage-dk); }
+
+.section-heading { font-family:var(--serif); font-size:clamp(32px,4vw,52px); font-weight:400; line-height:1.1; letter-spacing:-.02em; color:var(--ink); margin-bottom:32px; }
+.section-heading em { font-style:italic; }
+
+.body-text { font-size:15px; line-height:1.85; color:var(--muted); max-width:680px; margin-bottom:20px; }
+.body-text strong { color:var(--ink); font-weight:500; }
+
+.two-col { display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:start; }
+.three-col { display:grid; grid-template-columns:1fr 1fr 1fr; gap:24px; }
+
+/* brief */
+.brief-box { background:var(--ink); color:var(--bg); padding:40px 48px; margin:32px 0; display:flex; align-items:flex-start; gap:32px; }
+.brief-icon { font-family:var(--mono); font-size:11px; color:var(--sage-bg); letter-spacing:.1em; text-transform:uppercase; white-space:nowrap; padding-top:4px; }
+.brief-text { font-family:var(--serif); font-size:clamp(20px,2.5vw,28px); font-weight:400; font-style:italic; line-height:1.35; }
+
+/* App mockup */
+.app-mockup {
+  background: #9caf88;
+  border-radius: 12px;
+  padding: 32px 28px;
+  display: flex; flex-direction:column; align-items:center;
+  gap: 16px;
+  font-family: var(--mono);
+  position: relative;
+}
+.app-top-bar { width:100%; display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+.app-logo { font-family:var(--sans); font-weight:700; font-size:18px; color:#3d5a30; letter-spacing:-.02em; }
+.stamp-badge { background:#fff; border-radius:8px; padding:6px 12px; display:flex; align-items:center; gap:8px; font-size:11px; color:#3d5a30; font-weight:500; }
+.stamp-icon { font-size:14px; }
+
+.ice-container { display:flex; justify-content:center; margin:8px 0; }
+.ice-svg { opacity:.7; }
+
+.app-timer { font-family:var(--sans); font-size:56px; font-weight:800; color:#1a2e14; letter-spacing:-.03em; line-height:1; }
+.app-status { font-size:12px; color:#4a6340; letter-spacing:.08em; text-transform:uppercase; margin-top:4px; }
+.app-btns { display:flex; gap:10px; margin-top:12px; }
+.app-btn { padding:10px 22px; font-family:var(--sans); font-size:12px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; border-radius:0; border:none; cursor:default; }
+.app-btn.primary { background:#4a6340; color:#fff; }
+.app-btn.secondary { background:#7a9668; color:#fff; }
+.app-btn.ghost { background:#fff; color:#1a2e14; border:1px solid rgba(0,0,0,.15); }
+.app-drink-label { font-size:11px; color:#4a6340; letter-spacing:.06em; text-transform:uppercase; opacity:.7; }
+
+/* Competitor grid */
+.comp-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:32px; }
+.comp-card { background:var(--white); border:1px solid var(--line); padding:24px; }
+.comp-name { font-family:var(--sans); font-size:14px; font-weight:600; color:var(--ink); margin-bottom:6px; }
+.comp-ui { font-family:var(--mono); font-size:10px; color:var(--sage-dk); letter-spacing:.06em; text-transform:uppercase; margin-bottom:10px; }
+.comp-list { font-size:12px; line-height:1.7; color:var(--muted); }
+.comp-plus { color:#2d7a3a; font-weight:600; }
+.comp-minus { color:var(--accent); font-weight:600; }
+
+/* Insight row */
+.insight-row { display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:1px; background:var(--line); border:1px solid var(--line); margin-top:32px; }
+.insight-cell { background:var(--bg); padding:24px; }
+.insight-num { font-family:var(--mono); font-size:10px; color:var(--sage-dk); letter-spacing:.1em; text-transform:uppercase; margin-bottom:8px; }
+.insight-title { font-family:var(--serif); font-size:18px; color:var(--ink); margin-bottom:8px; line-height:1.2; }
+.insight-body { font-size:12px; line-height:1.65; color:var(--muted); }
+
+/* How-it-works steps */
+.hiw { display:grid; grid-template-columns:repeat(4,1fr); gap:0; margin-top:32px; border:1px solid var(--line); }
+.hiw-step { padding:28px; border-right:1px solid var(--line); position:relative; }
+.hiw-step:last-child { border-right:none; }
+.hiw-num { font-family:var(--mono); font-size:10px; color:var(--sage-dk); letter-spacing:.12em; text-transform:uppercase; margin-bottom:16px; }
+.hiw-icon { font-size:28px; margin-bottom:12px; display:block; }
+.hiw-title { font-family:var(--serif); font-size:18px; color:var(--ink); margin-bottom:8px; }
+.hiw-desc { font-size:12px; line-height:1.65; color:var(--muted); }
+.hiw-arrow { position:absolute; right:-14px; top:50%; transform:translateY(-50%); color:var(--line); font-size:20px; z-index:1; background:var(--bg); padding:2px; }
+
+/* Feature breakdown */
+.feat-block { margin-bottom:48px; }
+.feat-header { display:flex; align-items:baseline; gap:20px; margin-bottom:20px; padding-bottom:14px; border-bottom:1px solid var(--line); }
+.feat-num { font-family:var(--mono); font-size:11px; color:var(--sage-dk); letter-spacing:.1em; text-transform:uppercase; }
+.feat-name { font-family:var(--serif); font-size:clamp(24px,3vw,36px); font-weight:400; color:var(--ink); }
+.feat-name em { font-style:italic; }
+.feat-grid { display:grid; grid-template-columns:1fr 1fr; gap:32px; align-items:start; }
+.feat-desc { font-size:14px; line-height:1.8; color:var(--muted); margin-bottom:16px; }
+.feat-desc strong { color:var(--ink); font-weight:500; }
+.intent-notes { display:flex; flex-direction:column; gap:10px; }
+.intent-note { display:flex; gap:14px; padding:12px 16px; background:var(--white); border:1px solid var(--line); }
+.in-label { font-family:var(--mono); font-size:10px; color:var(--muted); letter-spacing:.08em; text-transform:uppercase; white-space:nowrap; min-width:80px; padding-top:2px; }
+.in-val { font-size:13px; line-height:1.6; color:var(--ink); }
+
+/* Drink selector mockup */
+.drink-modal {
+  background: var(--cream);
+  border:1px solid rgba(0,0,0,.1);
+  border-radius: 8px;
+  padding: 24px;
+  font-family: var(--mono);
+}
+.drink-modal-title { font-family:var(--sans); font-size:14px; font-weight:700; color:#3d5a30; margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid rgba(0,0,0,.1); }
+.drink-opts { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:12px 0; }
+.drink-opt { padding:10px 14px; border:1px solid rgba(122,150,104,.3); background:rgba(122,150,104,.08); font-size:11px; color:#3d5a30; text-align:center; cursor:default; border-radius:2px; }
+.drink-opt.active { background:#4a6340; color:#fff; border-color:#4a6340; }
+.drink-field { padding:10px 12px; border:1px solid rgba(0,0,0,.15); background:#fff; font-size:12px; color:var(--muted); margin-bottom:8px; width:100%; font-family:var(--mono); border-radius:2px; }
+.drink-label { font-size:10px; color:var(--muted); letter-spacing:.08em; text-transform:uppercase; margin-bottom:4px; }
+
+/* Loyalty card mockup */
+.loyalty-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  padding: 24px;
+  border-radius: 8px;
+}
+.lc-title { font-family:var(--sans); font-size:13px; font-weight:600; color:var(--ink); margin-bottom:4px; }
+.lc-sub { font-family:var(--mono); font-size:10px; color:var(--muted); letter-spacing:.06em; text-transform:uppercase; margin-bottom:20px; }
+.stamps-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; margin-bottom:16px; }
+.stamp { width:100%; aspect-ratio:1; border-radius:50%; border:2px solid var(--sage-bg); display:flex; align-items:center; justify-content:center; font-size:16px; }
+.stamp.filled { background:var(--sage-bg); }
+.stamp.empty { background:transparent; opacity:.3; }
+.lc-progress { font-family:var(--mono); font-size:11px; color:var(--muted); text-align:center; }
+.lc-progress span { color:var(--sage-dk); font-weight:600; }
+
+/* ── Design System section ──────────────────────── */
+.ds-section { padding: 80px 0; border-bottom: 1px solid var(--line); }
+.ds-section:last-child { border-bottom: none; }
+
+/* Colour system */
+.color-scale { display:flex; gap:0; height:64px; margin-bottom:8px; overflow:hidden; border:1px solid var(--line); }
+.cs-swatch { flex:1; display:flex; align-items:flex-end; padding:6px 8px; }
+.cs-label { font-family:var(--mono); font-size:9px; letter-spacing:.04em; opacity:.8; }
+.cs-label.dark { color:rgba(0,0,0,.5); }
+.cs-label.light { color:rgba(255,255,255,.8); }
+
+.color-row { margin-bottom:40px; }
+.color-row-header { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:12px; }
+.color-name { font-family:var(--sans); font-size:15px; font-weight:600; color:var(--ink); }
+.color-role { font-family:var(--mono); font-size:11px; color:var(--muted); letter-spacing:.06em; }
+
+/* Typography specimens */
+.type-specimen { padding:28px; background:var(--white); border:1px solid var(--line); margin-bottom:16px; }
+.type-label { font-family:var(--mono); font-size:10px; color:var(--muted); letter-spacing:.1em; text-transform:uppercase; margin-bottom:16px; }
+.type-sample { margin-bottom:12px; }
+.type-meta { font-family:var(--mono); font-size:10px; color:var(--muted); letter-spacing:.06em; display:flex; gap:20px; flex-wrap:wrap; }
+
+/* Component showcase */
+.component-row { display:flex; gap:16px; flex-wrap:wrap; margin-bottom:8px; align-items:center; }
+.component-label { font-family:var(--mono); font-size:10px; color:var(--muted); letter-spacing:.1em; text-transform:uppercase; margin-bottom:12px; }
+
+/* Pomomelto design tokens - button showcase */
+.pm-btn { display:inline-flex; align-items:center; gap:8px; padding:11px 22px; font-family:var(--sans); font-size:12px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; border:none; cursor:default; }
+.pm-btn.primary { background:#4a6340; color:#fff; }
+.pm-btn.secondary { background:#7a9668; color:#fff; }
+.pm-btn.ghost { background:transparent; color:var(--ink); border:1px solid var(--line); }
+.pm-btn.destructive { background:transparent; color:var(--accent); border:1px solid var(--accent); }
+
+/* Timer face */
+.timer-showcase {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 40px; background:#9caf88; border-radius: 12px;
+  gap: 8px;
+}
+.ts-time { font-family:var(--sans); font-size:72px; font-weight:800; color:#1a2e14; letter-spacing:-.04em; line-height:1; }
+.ts-label { font-family:var(--mono); font-size:11px; letter-spacing:.15em; text-transform:uppercase; color:#4a6340; }
+
+/* Spacing scale */
+.spacing-row { display:flex; gap:0; align-items:flex-end; margin-top:16px; }
+.sp-unit { display:flex; flex-direction:column; align-items:center; gap:8px; flex:1; }
+.sp-bar { width:100%; background:var(--sage-lt); border:1px solid var(--sage-bg); }
+.sp-val { font-family:var(--mono); font-size:9px; color:var(--muted); letter-spacing:.04em; }
+.sp-name { font-family:var(--mono); font-size:9px; color:var(--sage-dk); }
+
+/* Icon / motif row */
+.motif-row { display:flex; gap:16px; flex-wrap:wrap; }
+.motif-card { background:var(--white); border:1px solid var(--line); padding:24px 20px; display:flex; flex-direction:column; align-items:center; gap:8px; min-width:90px; }
+.motif-icon { font-size:32px; }
+.motif-label { font-family:var(--mono); font-size:10px; color:var(--muted); letter-spacing:.06em; text-align:center; }
+
+/* Animation docs */
+.anim-doc { background:var(--white); border:1px solid var(--line); padding:24px; margin-bottom:12px; display:flex; gap:24px; align-items:flex-start; }
+.anim-name { font-family:var(--serif); font-size:16px; font-weight:400; color:var(--ink); min-width:160px; }
+.anim-spec { font-family:var(--mono); font-size:11px; color:var(--muted); line-height:1.6; }
+.anim-dot { width:12px; height:12px; background:var(--sage); border-radius:50%; display:inline-block; }
+
+/* UX writing */
+.writing-pair { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line); border:1px solid var(--line); margin-bottom:12px; }
+.wp-cell { background:var(--bg); padding:20px; }
+.wp-cell.bad { background:#fff8f6; }
+.wp-cell.good { background:#f4f9f2; }
+.wp-label { font-family:var(--mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase; margin-bottom:8px; }
+.wp-label.bad { color:var(--accent); }
+.wp-label.good { color:#2d7a3a; }
+.wp-text { font-size:13px; color:var(--ink); line-height:1.5; }
+.wp-reason { font-size:11px; color:var(--muted); margin-top:6px; font-style:italic; }
+
+/* Reflection */
+.reflection-grid { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line); border:1px solid var(--line); }
+.refl-cell { background:var(--bg); padding:28px; }
+.refl-header { font-family:var(--mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase; margin-bottom:16px; display:flex; align-items:center; gap:10px; }
+.refl-header.pos { color:#2d7a3a; }
+.refl-header.neg { color:var(--accent); }
+.refl-item { display:flex; gap:10px; margin-bottom:12px; font-size:13px; line-height:1.6; color:var(--muted); }
+.refl-sym { font-weight:700; flex-shrink:0; }
+.refl-sym.pos { color:#2d7a3a; }
+.refl-sym.neg { color:var(--accent); }
+
+/* footer */
+footer { background:var(--ink); padding:80px 48px 48px; color:var(--bg); }
+.footer-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:80px; gap:40px; flex-wrap:wrap; }
+.footer-big { font-family:var(--serif); font-size:clamp(48px,7vw,96px); font-weight:400; font-style:italic; line-height:.9; letter-spacing:-.04em; }
+.footer-cta { display:flex; flex-direction:column; align-items:flex-end; gap:20px; padding-top:12px; }
+.footer-cta-label { font-family:var(--mono); font-size:11px; color:rgba(255,255,255,.4); letter-spacing:.1em; text-transform:uppercase; }
+.footer-btn { display:inline-flex; align-items:center; gap:10px; font-size:13px; font-weight:500; letter-spacing:.1em; text-transform:uppercase; color:var(--ink); background:var(--bg); text-decoration:none; padding:14px 28px; transition:background .2s,color .2s; }
+.footer-btn:hover { background:var(--accent); color:var(--white); }
+.footer-bottom { border-top:1px solid rgba(255,255,255,.1); padding-top:28px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; }
+.footer-copy { font-family:var(--mono); font-size:11px; color:rgba(255,255,255,.3); letter-spacing:.05em; }
+.footer-links { display:flex; gap:28px; list-style:none; }
+.footer-links a { font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:rgba(255,255,255,.5); text-decoration:none; transition:color .2s; }
+.footer-links a:hover { color:var(--bg); }
+
+.reveal { opacity:0; transform:translateY(28px); transition:opacity .7s cubic-bezier(.23,1,.32,1),transform .7s cubic-bezier(.23,1,.32,1); }
+.reveal.visible { opacity:1; transform:translateY(0); }
+.reveal-d1 { transition-delay:.1s; }
+.reveal-d2 { transition-delay:.2s; }
+
+/* toc sidebar on wide screens */
+@media(min-width:1300px){
+  .toc { position:fixed; left:32px; top:50%; transform:translateY(-50%); display:flex; flex-direction:column; gap:8px; z-index:100; }
+  .toc a { font-family:var(--mono); font-size:10px; color:rgba(15,14,11,.3); letter-spacing:.08em; text-decoration:none; transition:color .2s; display:flex; align-items:center; gap:8px; }
+  .toc a::before { content:''; width:16px; height:1px; background:currentColor; display:inline-block; }
+  .toc a:hover, .toc a.active { color:var(--sage-dk); }
+}
+@media(max-width:1299px){ .toc { display:none; } }
+
+@media(max-width:768px){
+  nav{padding:20px 24px;}
+  .case-hero{padding:120px 24px 60px;} .ice-deco{display:none;}
+  .case-meta{grid-template-columns:1fr 1fr;gap:16px;border-top:none;}
+  .meta-item{border-right:none;padding:0;margin:0;}
+  .case-cta{grid-column:1/-1;align-self:auto;justify-self:start;margin-top:24px;}
+  .case-body{padding:0 24px;}
+  .two-col,.three-col,.feat-grid,.comp-grid,.insight-row,.hiw,.writing-pair,.reflection-grid{grid-template-columns:1fr; flex-direction:column;}
+  .hiw{border:none;} .hiw-step{border:1px solid var(--line);margin-bottom:8px;border-right:1px solid var(--line);} .hiw-arrow{display:none;}
+  .brief-box{padding:28px 24px;flex-direction:column;gap:16px;}
+  .color-scale{height:40px;}
+  footer{padding:60px 24px 40px;}
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+
+<!-- TOC sidebar -->
+<nav class="toc" aria-label="Page sections">
+  <a href="#context" data-sec="context">Context</a>
+  <a href="#research" data-sec="research">Research</a>
+  <a href="#concept" data-sec="concept">Concept</a>
+  <a href="#features" data-sec="features">Features</a>
+  <a href="#design-system" data-sec="design-system">Design System</a>
+  <a href="#ux-writing" data-sec="ux-writing">UX Writing</a>
+  <a href="#reflection" data-sec="reflection">Reflection</a>
+</nav>
+
+<nav>
+  <a href="index.html" class="nav-logo">pm — ux designer</a>
+  <ul class="nav-links">
+    <li><a href="index.html#projects">Work</a></li>
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="https://drive.google.com/file/d/14PsnhjjoBFldTPVjnW1V9XbGfqqdJeax/view" target="_blank">Résumé</a></li>
+  </ul>
+</nav>
+
+<!-- Hero -->
+<header class="case-hero">
+  <div class="hero-bg"></div>
+  <div class="ice-deco">
+    <div class="ice-cube a"></div>
+    <div class="ice-cube b"></div>
+    <div class="ice-cube c"></div>
+  </div>
+
+  <div class="case-eyebrow">
+    <a href="index.html">← Back to work</a>
+    <span class="case-eyebrow-sep">/</span>
+    <span>Product Design · Design System · Web App</span>
+  </div>
+
+  <h1 class="case-title">Pomo<em>melto</em></h1>
+
+  <div class="case-meta">
+    <div class="meta-item">
+      <div class="meta-label">Type</div>
+      <div class="meta-val">Solo project</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Year</div>
+      <div class="meta-val">2025</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Platform</div>
+      <div class="meta-val">Web App</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Tools</div>
+      <div class="meta-val">Figma · HTML/CSS</div>
+    </div>
+    <div class="meta-item" style="border-right:none;">
+      <div class="meta-label">Status</div>
+      <div class="meta-val">Live ✓</div>
+    </div>
+    <a href="https://ppw-pm.github.io/pomomelto/" target="_blank" class="case-cta">Try the app →</a>
+  </div>
+</header>
+
+<div class="case-body">
+
+  <!-- 00 Overview -->
+  <section class="case-section reveal" id="context">
+    <div class="section-label"><span class="num">00</span> Overview</div>
+    <div class="two-col">
+      <div>
+        <h2 class="section-heading">Focus like a regular.<br><em>Earn your next drink.</em></h2>
+        <p class="body-text">Pomomelto is a café-themed Pomodoro focus timer where completing work sessions earns you stamps on a loyalty card — just like at your favourite coffee shop. <strong>Productivity becomes rewarding in a way that actually feels good.</strong></p>
+        <p class="body-text">The project grew from a genuine frustration: most focus timers are either coldly minimal or overwhelmingly gamified. Pomomelto finds the middle ground — warm, tactile, café-coded.</p>
+        <div class="brief-box">
+          <span class="brief-icon">Core idea</span>
+          <p class="brief-text">"What if your Pomodoro timer rewarded you like a café loyalty card — a free drink after 10 focused sessions?"</p>
+        </div>
+      </div>
+      <div>
+        <!-- Actual app screenshot in browser frame -->
+        <div style="border:1px solid var(--line); border-radius:10px; overflow:hidden; box-shadow:0 12px 48px rgba(0,0,0,.10);">
+          <!-- browser chrome bar -->
+          <div style="background:#f5f3ee; border-bottom:1px solid var(--line); padding:10px 16px; display:flex; align-items:center; gap:10px;">
+            <div style="display:flex; gap:6px;">
+              <div style="width:10px;height:10px;border-radius:50%;background:#ff5f57;"></div>
+              <div style="width:10px;height:10px;border-radius:50%;background:#ffbd2e;"></div>
+              <div style="width:10px;height:10px;border-radius:50%;background:#28ca41;"></div>
+            </div>
+            <div style="flex:1; background:#e8e5de; border-radius:4px; padding:4px 12px; font-family:var(--mono); font-size:10px; color:var(--muted); letter-spacing:.04em;">ppw-pm.github.io/pomomelto</div>
+          </div>
+          <img
+            src="pomomelto-screenshot.png"
+            alt="Pomomelto app — live screenshot"
+            style="width:100%; display:block;"
+          >
+        </div>
+        <div style="font-family:var(--mono); font-size:10px; color:var(--muted); letter-spacing:.06em; text-transform:uppercase; margin-top:10px; text-align:center;">Live app · ppw-pm.github.io/pomomelto</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 01 Research -->
+  <section class="case-section reveal" id="research">
+    <div class="section-label"><span class="num">01</span> Competitive Research</div>
+    <h2 class="section-heading">5 competitors.<br><em>One gap.</em></h2>
+    <p class="body-text" style="margin-bottom:40px;">I hand-wrote notes across five Pomodoro apps — Pomi, Pomodoro Focus Timer, Forest, Fovert, and Flow Timer — charting their UI approach, features, and user review patterns to find the white space.</p>
+
+    <div class="comp-grid">
+      <div class="comp-card">
+        <div class="comp-name">Pomi</div>
+        <div class="comp-ui">UI: Minimal — one tap</div>
+        <div class="comp-list">
+          <span class="comp-plus">+</span> Leaderboards, streaks, focus tags<br>
+          <span class="comp-minus">−</span> No reset button — last session keeps repeating<br>
+          <span class="comp-minus">−</span> Stats not accurate
+        </div>
+      </div>
+      <div class="comp-card">
+        <div class="comp-name">Pomodoro Focus Timer</div>
+        <div class="comp-ui">UI: Minimal — a few controls</div>
+        <div class="comp-list">
+          <span class="comp-plus">+</span> Relaxing sounds, timer list, dark mode<br>
+          <span class="comp-minus">−</span> No custom photo, timer list locked behind paywall<br>
+          <span class="comp-minus">−</span> Ads are distracting
+        </div>
+      </div>
+      <div class="comp-card">
+        <div class="comp-name">Flora — Green Focus</div>
+        <div class="comp-ui">UI: Simple, some graphics</div>
+        <div class="comp-list">
+          <span class="comp-plus">+</span> Plant real trees with friends, share progress<br>
+          <span class="comp-minus">−</span> Using AI imagery feels hypocritical with eco-brand<br>
+          <span class="comp-minus">−</span> Too much going on — too many steps to plant
+        </div>
+      </div>
+      <div class="comp-card">
+        <div class="comp-name">Focus Traveller — Flow Timer</div>
+        <div class="comp-ui">UI: Cute, vivid, organised</div>
+        <div class="comp-list">
+          <span class="comp-plus">+</span> Switch between timers, Apple Music, group focus<br>
+          <span class="comp-minus">−</span> Can't change total timing in hours<br>
+          <span class="comp-minus">−</span> No visual cue for time already spent on timer
+        </div>
+      </div>
+    </div>
+
+    <div class="insight-row" style="margin-top:40px;">
+      <div class="insight-cell">
+        <div class="insight-num">Gap 01</div>
+        <div class="insight-title">No warm reward mechanism</div>
+        <p class="insight-body">Streaks are punishing if you miss a day. No app used a collectible, café-style reward loop.</p>
+      </div>
+      <div class="insight-cell">
+        <div class="insight-num">Gap 02</div>
+        <div class="insight-title">Visual personalisation locked</div>
+        <p class="insight-body">Custom aesthetics — drink themes, visual identity — were either absent or paywalled.</p>
+      </div>
+      <div class="insight-cell">
+        <div class="insight-num">Gap 03</div>
+        <div class="insight-title">Sessions feel sterile</div>
+        <p class="insight-body">Most timers feel like a countdown on a stopwatch. No emotional framing around the session.</p>
+      </div>
+      <div class="insight-cell">
+        <div class="insight-num">Gap 04</div>
+        <div class="insight-title">Progress resets harshly</div>
+        <p class="insight-body">Users wanted forgiveness UX — the feeling that effort accumulates, not just a number ticking.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 Concept -->
+  <section class="case-section reveal" id="concept">
+    <div class="section-label"><span class="num">02</span> Concept &amp; Design Direction</div>
+    <h2 class="section-heading">The café<br><em>as metaphor.</em></h2>
+    <div class="two-col">
+      <div>
+        <p class="body-text">The café loyalty card is a universally understood reward loop — collect stamps, earn a free drink. <strong>It's low-pressure, tangible, and warm.</strong> Applied to a Pomodoro timer, it reframes completed sessions not as discipline but as treats earned.</p>
+        <p class="body-text">The visual direction came from the loyalty card itself: organic shapes (ice cubes, drink vessels), a muted sage palette that evokes a cosy café window seat, and typography that balances playfulness with focus.</p>
+        <p class="body-text">Choosing a <strong>drink type as session personalisation</strong> was key — it gives each session a small identity, makes the timer feel like yours, and anchors the café metaphor all the way through.</p>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        <!-- Cup design explorations from Figma -->
+        <div style="border:1px solid var(--line); border-radius:8px; overflow:hidden;">
+          <img src="pomomelto-cups.png" alt="Cup design explorations — 9 vessel shapes iterated in Figma" style="width:100%; display:block;">
+        </div>
+        <div style="font-family:var(--mono); font-size:10px; color:var(--muted); letter-spacing:.06em; text-transform:uppercase; text-align:center;">Cup design explorations — 9 vessel shapes, one selected</div>
+      </div>
+    </div>
+
+    <!-- How it works -->
+    <div class="section-label" style="margin-top:56px; margin-bottom:20px;">How it works</div>
+    <div class="hiw">
+      <div class="hiw-step">
+        <div class="hiw-num">Step 01</div>
+        <span class="hiw-icon">☕</span>
+        <div class="hiw-title">Choose your drink</div>
+        <p class="hiw-desc">Pick Matcha, Coffee, Chocolate, or Iced Lemon Tea — your session takes on its flavour.</p>
+        <div class="hiw-arrow">›</div>
+      </div>
+      <div class="hiw-step">
+        <div class="hiw-num">Step 02</div>
+        <span class="hiw-icon">⏱</span>
+        <div class="hiw-title">Set your session</div>
+        <p class="hiw-desc">Customise session length and break duration. The timer shows your chosen drink's ice cubes.</p>
+        <div class="hiw-arrow">›</div>
+      </div>
+      <div class="hiw-step">
+        <div class="hiw-num">Step 03</div>
+        <span class="hiw-icon">🧠</span>
+        <div class="hiw-title">Focus</div>
+        <p class="hiw-desc">The timer counts down. No distractions, no leaderboards — just you and the clock.</p>
+        <div class="hiw-arrow">›</div>
+      </div>
+      <div class="hiw-step">
+        <div class="hiw-num">Step 04</div>
+        <span class="hiw-icon">🎫</span>
+        <div class="hiw-title">Earn a stamp</div>
+        <p class="hiw-desc">Complete the session → get a stamp on your loyalty card. 10 stamps = free reward.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 Features -->
+  <section class="case-section reveal" id="features">
+    <div class="section-label"><span class="num">03</span> Features</div>
+    <h2 class="section-heading">Three features,<br><em>one loop.</em></h2>
+
+    <!-- Feature 01: Timer -->
+    <div class="feat-block">
+      <div class="feat-header">
+        <span class="feat-num">Feature 01</span>
+        <div class="feat-name">The Focus <em>Timer</em></div>
+      </div>
+      <div class="feat-grid">
+        <div>
+          <p class="feat-desc">A full-screen Pomodoro timer with ice cube visuals that match your chosen drink. The large, confident typography keeps focus on what matters — <strong>the countdown.</strong> Three states: Ready, Running, Paused.</p>
+          <div class="intent-notes">
+            <div class="intent-note"><span class="in-label">Visual cue</span><span class="in-val">Ice cubes = your drink is being made. It's almost ready.</span></div>
+            <div class="intent-note"><span class="in-label">Button logic</span><span class="in-val">Start / Pause / Reset — minimal decision points during a session.</span></div>
+            <div class="intent-note"><span class="in-label">Font weight</span><span class="in-val">Bold 800 timer numerals — hard to miss, impossible to ignore.</span></div>
+          </div>
+        </div>
+        <div style="border:1px solid var(--line); border-radius:8px; overflow:hidden;">
+          <div style="background:#f5f3ee; border-bottom:1px solid var(--line); padding:8px 14px; display:flex; align-items:center; gap:8px;">
+            <div style="display:flex;gap:5px;"><div style="width:8px;height:8px;border-radius:50%;background:#ff5f57;"></div><div style="width:8px;height:8px;border-radius:50%;background:#ffbd2e;"></div><div style="width:8px;height:8px;border-radius:50%;background:#28ca41;"></div></div>
+            <div style="font-family:var(--mono);font-size:9px;color:var(--muted);">pomomelto — timer</div>
+          </div>
+          <img src="pomomelto-screenshot.png" alt="Pomomelto timer" style="width:100%;display:block;">
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature 02: Drink Order -->
+    <div class="feat-block">
+      <div class="feat-header">
+        <span class="feat-num">Feature 02</span>
+        <div class="feat-name">Adjust Your Drink <em>Order</em></div>
+      </div>
+      <div class="feat-grid">
+        <div>
+          <p class="feat-desc">A settings sheet framed as a café order slip. Customise session length, break duration, and your drink type. <strong>Framing settings as an "order" maintains the metaphor</strong> and makes configuration feel like a ritual, not a chore.</p>
+          <div class="intent-notes">
+            <div class="intent-note"><span class="in-label">Metaphor</span><span class="in-val">"Adjust Your Drink Order" = settings. Familiar, low-friction framing.</span></div>
+            <div class="intent-note"><span class="in-label">Drink types</span><span class="in-val">Matcha · Coffee · Chocolate · Iced Lemon Tea — each a distinct visual identity.</span></div>
+            <div class="intent-note"><span class="in-label">Save / Cancel</span><span class="in-val">Clear commit/dismiss actions. No auto-save ambiguity.</span></div>
+          </div>
+        </div>
+        <div style="border:1px solid var(--line); border-radius:10px; overflow:hidden; box-shadow:0 8px 32px rgba(0,0,0,.07);">
+          <img src="pomomelto-drinkorder.png" alt="Adjust Your Drink Order — settings modal screenshot" style="width:100%; display:block;">
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature 03: Loyalty Card -->
+    <div class="feat-block">
+      <div class="feat-header">
+        <span class="feat-num">Feature 03</span>
+        <div class="feat-name">Loyalty <em>Card</em></div>
+      </div>
+      <div class="feat-grid">
+        <div>
+          <p class="feat-desc">Each completed Pomodoro session earns one stamp. At 10 stamps, you've earned a free reward — a moment of genuine delight. <strong>The loyalty card makes productivity accumulate visibly</strong>, turning abstract effort into a tangible collection.</p>
+          <div class="intent-notes">
+            <div class="intent-note"><span class="in-label">Stamp trigger</span><span class="in-val">Only a fully completed session earns a stamp — no shortcuts.</span></div>
+            <div class="intent-note"><span class="in-label">10-stamp goal</span><span class="in-val">Achievable in a single day of deep work (10 × 25 min = ~4 hrs focused).</span></div>
+            <div class="intent-note"><span class="in-label">Celebration</span><span class="in-val">A congratulations moment on card completion — small but meaningful.</span></div>
+          </div>
+        </div>
+        <div>
+          <div class="loyalty-card">
+            <div class="lc-title">🎫 My Royalty Card</div>
+            <div class="lc-sub">6 / 10 stamps collected</div>
+            <div class="stamps-grid">
+              <div class="stamp filled">☕</div>
+              <div class="stamp filled">☕</div>
+              <div class="stamp filled">☕</div>
+              <div class="stamp filled">☕</div>
+              <div class="stamp filled">☕</div>
+              <div class="stamp filled">☕</div>
+              <div class="stamp empty">·</div>
+              <div class="stamp empty">·</div>
+              <div class="stamp empty">·</div>
+              <div class="stamp empty">·</div>
+            </div>
+            <div style="background:rgba(122,150,104,.1); border:1px dashed var(--sage-bg); padding:10px; text-align:center; font-family:var(--mono); font-size:11px; color:var(--sage-dk);">4 more sessions → free reward ✨</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 Design System -->
+  <section class="case-section reveal" id="design-system">
+    <div class="section-label"><span class="num">04</span> Design System</div>
+    <h2 class="section-heading">Colour, type,<br><em>components.</em></h2>
+
+    <!-- Colour -->
+    <div style="margin-bottom:56px;">
+      <div class="section-label" style="margin-bottom:28px;">01 — Colour palette</div>
+
+      <div class="color-row">
+        <div class="color-row-header">
+          <span class="color-name">Sage — Primary</span>
+          <span class="color-role">Brand identity · Logo · Main CTAs</span>
+        </div>
+        <div class="color-scale">
+          <div class="cs-swatch" style="background:#D1E8D1;"><span class="cs-label dark">200<br>#D1E8D1</span></div>
+          <div class="cs-swatch" style="background:#BFDFBF;"><span class="cs-label dark">300<br>#BFDFBF</span></div>
+          <div class="cs-swatch" style="background:#9CAF88;"><span class="cs-label dark">400<br>#9CAF88</span></div>
+          <div class="cs-swatch" style="background:#7A9668;"><span class="cs-label light">500<br>#7A9668</span></div>
+          <div class="cs-swatch" style="background:#6B8459;"><span class="cs-label light">600<br>#6B8459</span></div>
+          <div class="cs-swatch" style="background:#5C724A;"><span class="cs-label light">700<br>#5C724A</span></div>
+        </div>
+        <p style="font-size:12px; color:var(--muted); font-family:var(--mono); margin-top:8px; letter-spacing:.04em;">Use 500 for interactive elements. 400 as background. 700 for text on light. 200–300 for tints and hover states.</p>
+      </div>
+
+      <div class="color-row">
+        <div class="color-row-header">
+          <span class="color-name">BlueGray — Secondary</span>
+          <span class="color-role">Supporting elements · Secondary actions (Cancel, Back, Edit)</span>
+        </div>
+        <div class="color-scale">
+          <div class="cs-swatch" style="background:#D6E1F0;"><span class="cs-label dark">200<br>#D6E1F0</span></div>
+          <div class="cs-swatch" style="background:#B8CEE8;"><span class="cs-label dark">300<br>#B8CEE8</span></div>
+          <div class="cs-swatch" style="background:#8B9DC3;"><span class="cs-label dark">400<br>#8B9DC3</span></div>
+          <div class="cs-swatch" style="background:#7A8BBB;"><span class="cs-label light">500<br>#7A8BBB</span></div>
+          <div class="cs-swatch" style="background:#6B7BA8;"><span class="cs-label light">600<br>#6B7BA8</span></div>
+          <div class="cs-swatch" style="background:#5C6B98;"><span class="cs-label light">700<br>#5C6B98</span></div>
+        </div>
+        <p style="font-size:12px; color:var(--muted); font-family:var(--mono); margin-top:8px; letter-spacing:.04em;">Muted/subtle — never competing with sage. Used for secondary button fills, inactive states, supporting UI.</p>
+      </div>
+
+      <div class="color-row">
+        <div class="color-row-header">
+          <span class="color-name">Cream — Neutral</span>
+          <span class="color-role">Page backgrounds · Input fields · Subtle hover effects</span>
+        </div>
+        <div class="color-scale">
+          <div class="cs-swatch" style="background:#F5F1E8;"><span class="cs-label dark">200<br>#F5F1E8</span></div>
+          <div class="cs-swatch" style="background:#F0EAD8;"><span class="cs-label dark">300<br>#F0EAD8</span></div>
+          <div class="cs-swatch" style="background:#E8DFC4;"><span class="cs-label dark">400<br>#E8DFC4</span></div>
+          <div class="cs-swatch" style="background:#DDD2A8;"><span class="cs-label dark">500<br>#DDD2A8</span></div>
+          <div class="cs-swatch" style="background:#CFC18A;"><span class="cs-label dark">600<br>#CFC18A</span></div>
+          <div class="cs-swatch" style="background:#B8A66D;"><span class="cs-label dark">700<br>#B8A66D</span></div>
+        </div>
+        <p style="font-size:12px; color:var(--muted); font-family:var(--mono); margin-top:8px; letter-spacing:.04em;">Foundation colours that don't compete for attention. 200–300 for backgrounds, 400 for modal surfaces, 500–700 for dividers and decorative elements.</p>
+      </div>
+
+      <!-- Semantic colour usage -->
+      <div class="section-label" style="margin-top:32px; margin-bottom:16px; font-size:10px;">Semantic colour usage</div>
+      <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line); border:1px solid var(--line);">
+        <div style="background:var(--bg); padding:20px;">
+          <div style="width:32px;height:32px;background:#4a6340;margin-bottom:12px;"></div>
+          <div style="font-family:var(--mono); font-size:10px; color:var(--muted); letter-spacing:.08em; text-transform:uppercase; margin-bottom:4px;">Interactive</div>
+          <div style="font-size:12px; color:var(--ink);">Primary CTA, logo, active states</div>
+        </div>
+        <div style="background:var(--bg); padding:20px;">
+          <div style="width:32px;height:32px;background:#7A8BBB;margin-bottom:12px;"></div>
+          <div style="font-family:var(--mono); font-size:10px; color:var(--muted); letter-spacing:.08em; text-transform:uppercase; margin-bottom:4px;">Secondary</div>
+          <div style="font-size:12px; color:var(--ink);">Cancel, reset, secondary actions</div>
+        </div>
+        <div style="background:var(--bg); padding:20px;">
+          <div style="width:32px;height:32px;background:#9caf88;margin-bottom:12px;"></div>
+          <div style="font-family:var(--mono); font-size:10px; color:var(--muted); letter-spacing:.08em; text-transform:uppercase; margin-bottom:4px;">Surface</div>
+          <div style="font-size:12px; color:var(--ink);">Timer background, app canvas</div>
+        </div>
+        <div style="background:var(--bg); padding:20px;">
+          <div style="width:32px;height:32px;background:#F0EAD8;border:1px solid var(--line);margin-bottom:12px;"></div>
+          <div style="font-family:var(--mono); font-size:10px; color:var(--muted); letter-spacing:.08em; text-transform:uppercase; margin-bottom:4px;">Neutral</div>
+          <div style="font-size:12px; color:var(--ink);">Page bg, modal surfaces, inputs</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Typography -->
+    <div style="margin-bottom:56px;">
+      <div class="section-label" style="margin-bottom:28px;">02 — Typography</div>
+      <div class="two-col">
+        <div>
+          <div class="type-specimen">
+            <div class="type-label">Display — used for the timer numerals</div>
+            <div class="type-sample">
+              <div style="font-size:64px; font-weight:800; color:var(--ink); line-height:1; letter-spacing:-.04em;">25:00</div>
+            </div>
+            <div class="type-meta">
+              <span>Weight 800</span>
+              <span>Size 64–72px</span>
+              <span>Tracking −0.04em</span>
+              <span>Usage: timer face only</span>
+            </div>
+          </div>
+          <div class="type-specimen">
+            <div class="type-label">Heading — app name, modal titles</div>
+            <div class="type-sample">
+              <div style="font-size:24px; font-weight:700; color:var(--ink); line-height:1.1; letter-spacing:-.01em;">Pomomelto</div>
+            </div>
+            <div class="type-meta"><span>Weight 700</span><span>Size 18–24px</span></div>
+          </div>
+        </div>
+        <div>
+          <div class="type-specimen">
+            <div class="type-label">Label — status, drink type, button text</div>
+            <div class="type-sample" style="display:flex; gap:12px; flex-wrap:wrap;">
+              <span style="font-family:var(--mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--sage-dk);">Ready</span>
+              <span style="font-family:var(--mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--sage-dk);">Matcha</span>
+              <span style="font-family:var(--mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--sage-dk);">Session 01</span>
+            </div>
+            <div class="type-meta"><span>Monospace</span><span>Size 10–12px</span><span>All caps</span><span>Tracking +0.12em</span></div>
+          </div>
+          <div class="type-specimen">
+            <div class="type-label">Body — settings, descriptions</div>
+            <div class="type-sample">
+              <div style="font-size:13px; line-height:1.7; color:var(--muted);">Adjust session length and break duration, then choose your drink type. Each completed session earns you one stamp.</div>
+            </div>
+            <div class="type-meta"><span>Weight 400</span><span>Size 12–14px</span><span>Line-height 1.65–1.8</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Components -->
+    <div style="margin-bottom:56px;">
+      <div class="section-label" style="margin-bottom:28px;">03 — Components &amp; Buttons</div>
+
+      <div class="component-label">Button variants</div>
+      <div class="component-row" style="margin-bottom:24px;">
+        <div class="pm-btn primary">Start</div>
+        <div class="pm-btn secondary">Pause</div>
+        <div class="pm-btn ghost">Setting</div>
+        <div class="pm-btn destructive">Reset</div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:1px; background:var(--line); border:1px solid var(--line); margin-bottom:32px;">
+        <div style="background:var(--bg); padding:16px;">
+          <div style="font-family:var(--mono); font-size:10px; color:var(--muted); letter-spacing:.08em; text-transform:uppercase; margin-bottom:8px;">Primary</div>
+          <div style="font-size:12px; color:var(--ink); line-height:1.5;">Filled sage #4a6340. For the single most important action in context (Start, Save).</div>
+        </div>
+        <div style="background:var(--bg); padding:16px;">
+          <div style="font-family:var(--mono); font-size:10px; color:var(--muted); letter-spacing:.08em; text-transform:uppercase; margin-bottom:8px;">Secondary</div>
+          <div style="font-size:12px; color:var(--ink); line-height:1.5;">Filled sage-400 #9caf88 or bluegray. For supporting actions (Pause, Edit).</div>
+        </div>
+        <div style="background:var(--bg); padding:16px;">
+          <div style="font-family:var(--mono); font-size:10px; color:var(--muted); letter-spacing:.08em; text-transform:uppercase; margin-bottom:8px;">Ghost</div>
+          <div style="font-size:12px; color:var(--ink); line-height:1.5;">Transparent + ink border. For tertiary actions that need presence but not weight (Setting, Cancel).</div>
+        </div>
+        <div style="background:var(--bg); padding:16px;">
+          <div style="font-family:var(--mono); font-size:10px; color:var(--muted); letter-spacing:.08em; text-transform:uppercase; margin-bottom:8px;">Destructive</div>
+          <div style="font-size:12px; color:var(--ink); line-height:1.5;">Transparent + accent border. For irreversible actions only (Reset — clears progress).</div>
+        </div>
+      </div>
+
+      <div class="component-label">Spacing system — 4px base grid</div>
+      <div class="spacing-row">
+        <div class="sp-unit"><div class="sp-bar" style="height:4px;"></div><div class="sp-val">4px</div><div class="sp-name">xs</div></div>
+        <div class="sp-unit"><div class="sp-bar" style="height:8px;"></div><div class="sp-val">8px</div><div class="sp-name">sm</div></div>
+        <div class="sp-unit"><div class="sp-bar" style="height:12px;"></div><div class="sp-val">12px</div><div class="sp-name">md</div></div>
+        <div class="sp-unit"><div class="sp-bar" style="height:16px;"></div><div class="sp-val">16px</div><div class="sp-name">lg</div></div>
+        <div class="sp-unit"><div class="sp-bar" style="height:24px;"></div><div class="sp-val">24px</div><div class="sp-name">xl</div></div>
+        <div class="sp-unit"><div class="sp-bar" style="height:32px;"></div><div class="sp-val">32px</div><div class="sp-name">2xl</div></div>
+        <div class="sp-unit"><div class="sp-bar" style="height:48px;"></div><div class="sp-val">48px</div><div class="sp-name">3xl</div></div>
+      </div>
+    </div>
+
+    <!-- Visual motifs -->
+    <div>
+      <div class="section-label" style="margin-bottom:28px;">04 — Visual motifs</div>
+      <p class="body-text" style="margin-bottom:24px;">The ice cube and drink vessel are the signature visual elements — they appear as the timer's hero illustration, in the loyalty card, and as the app icon. Organic, rounded shapes with semi-transparent fills create depth without complexity.</p>
+      <div class="motif-row">
+        <div class="motif-card">
+          <div class="motif-icon">🧊</div>
+          <div class="motif-label">Ice cubes<br>Timer hero</div>
+        </div>
+        <div class="motif-card">
+          <div class="motif-icon">🍵</div>
+          <div class="motif-label">Matcha<br>Drink 01</div>
+        </div>
+        <div class="motif-card">
+          <div class="motif-icon">☕</div>
+          <div class="motif-label">Coffee<br>Drink 02</div>
+        </div>
+        <div class="motif-card">
+          <div class="motif-icon">🍫</div>
+          <div class="motif-label">Chocolate<br>Drink 03</div>
+        </div>
+        <div class="motif-card">
+          <div class="motif-icon">🍋</div>
+          <div class="motif-label">Iced Lemon Tea<br>Drink 04</div>
+        </div>
+        <div class="motif-card">
+          <div class="motif-icon">🎫</div>
+          <div class="motif-label">Stamp<br>Reward token</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 UX Writing -->
+  <section class="case-section reveal" id="ux-writing">
+    <div class="section-label"><span class="num">05</span> UX Writing</div>
+    <h2 class="section-heading">The café voice —<br><em>warm, not twee.</em></h2>
+    <p class="body-text" style="margin-bottom:40px;">Every string in the app was written to maintain the café metaphor without becoming precious. The tone is <strong>warm, direct, and a little playful</strong> — like a barista who knows your order.</p>
+
+    <div class="writing-pair">
+      <div class="wp-cell bad"><div class="wp-label bad">✕ Generic</div><div class="wp-text">Settings</div><div class="wp-reason">Functional but forgettable — breaks the metaphor entirely.</div></div>
+      <div class="wp-cell good"><div class="wp-label good">✓ Pomomelto</div><div class="wp-text">Adjust Your Drink Order</div><div class="wp-reason">Settings = an order — instantly understood, deeply on-brand.</div></div>
+    </div>
+    <div class="writing-pair">
+      <div class="wp-cell bad"><div class="wp-label bad">✕ Generic</div><div class="wp-text">Timer complete. Session ended.</div><div class="wp-reason">Cold, robotic. No emotional payoff after 25 minutes of focus.</div></div>
+      <div class="wp-cell good"><div class="wp-label good">✓ Pomomelto</div><div class="wp-text">🎉 Congratulations! You've earned a free reward!</div><div class="wp-reason">Celebratory, specific, and tied directly to the loyalty metaphor.</div></div>
+    </div>
+    <div class="writing-pair">
+      <div class="wp-cell bad"><div class="wp-label bad">✕ Generic</div><div class="wp-text">Rewards / Points</div><div class="wp-reason">Abstract — could be anything. No sensory or emotional hook.</div></div>
+      <div class="wp-cell good"><div class="wp-label good">✓ Pomomelto</div><div class="wp-text">My Royalty Card · Stamp</div><div class="wp-reason">"Royalty" = punny + aspirational. "Stamp" = tactile and café-coded.</div></div>
+    </div>
+    <div class="writing-pair">
+      <div class="wp-cell bad"><div class="wp-label bad">✕ Generic</div><div class="wp-text">Ready to start</div><div class="wp-reason">Passive — puts the burden on the user.</div></div>
+      <div class="wp-cell good"><div class="wp-label good">✓ Pomomelto</div><div class="wp-text">Ready</div><div class="wp-reason">Short, confident, and open — the timer is ready, implicitly so are you.</div></div>
+    </div>
+  </section>
+
+  <!-- 06 Reflection -->
+  <section class="case-section reveal" id="reflection">
+    <div class="section-label"><span class="num">06</span> Reflection</div>
+    <h2 class="section-heading">What landed,<br><em>what's next.</em></h2>
+    <div class="reflection-grid" style="margin-top:40px;">
+      <div class="refl-cell">
+        <div class="refl-header pos">✓ What worked</div>
+        <div class="refl-item"><span class="refl-sym pos">+</span><span>The loyalty card metaphor immediately communicates the reward loop — no explanation needed.</span></div>
+        <div class="refl-item"><span class="refl-sym pos">+</span><span>Drink personalisation makes every session feel like yours, not just a generic countdown.</span></div>
+        <div class="refl-item"><span class="refl-sym pos">+</span><span>The sage palette creates a calming, café-like atmosphere that reduces the pressure to "perform focus."</span></div>
+        <div class="refl-item"><span class="refl-sym pos">+</span><span>Framing settings as "Adjust Your Drink Order" was consistently noted as charming and memorable.</span></div>
+        <div class="refl-item"><span class="refl-sym pos">+</span><span>Building and shipping the full design system as part of the project gave the UI a polished, intentional quality throughout.</span></div>
+      </div>
+      <div class="refl-cell">
+        <div class="refl-header neg">! Next up</div>
+        <div class="refl-item"><span class="refl-sym neg">!</span><span>Add a sorting / export of session statistics — users wanted to see their productivity patterns over time.</span></div>
+        <div class="refl-item"><span class="refl-sym neg">!</span><span>Implement persistent storage so stamps and session history survive page refresh.</span></div>
+        <div class="refl-item"><span class="refl-sym neg">!</span><span>Add a "Streak Freeze" mechanic — forgiveness UX that protects progress without punishing a missed day.</span></div>
+        <div class="refl-item"><span class="refl-sym neg">!</span><span>Sound design — ambient café sounds and a distinct "stamp earned" chime would complete the sensory experience.</span></div>
+        <div class="refl-item"><span class="refl-sym neg">!</span><span>Accessibility audit needed — the light sage-on-sage contrast in the app background may not meet WCAG AA for all text.</span></div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /case-body -->
+
+<footer>
+  <div class="footer-top">
+    <div class="footer-big">Let's<br>work.</div>
+    <div class="footer-cta">
+      <span class="footer-cta-label">Next project</span>
+      <a href="thebreakroom.html" class="footer-btn">The Break Room →</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2025 Pornpawee Manyuen — UX Designer</span>
+    <ul class="footer-links">
+      <li><a href="https://www.behance.net/pornpawee-manyuen" target="_blank">Behance</a></li>
+      <li><a href="https://www.instagram.com/thereandthese/" target="_blank">Instagram</a></li>
+      <li><a href="https://www.linkedin.com/in/pornpawee-manyuen/" target="_blank">LinkedIn</a></li>
+      <li><a href="https://drive.google.com/file/d/14PsnhjjoBFldTPVjnW1V9XbGfqqdJeax/view" target="_blank">Résumé</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+/* cursor */
+var cur=document.getElementById('cursor');
+var mx=0,my=0,cx=0,cy=0;
+document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;});
+function lerp(a,b,t){return a+(b-a)*t;}
+(function tick(){cx=lerp(cx,mx,.18);cy=lerp(cy,my,.18);cur.style.left=cx+'px';cur.style.top=cy+'px';requestAnimationFrame(tick);})();
+document.querySelectorAll('a,button').forEach(function(el){
+  el.addEventListener('mouseenter',function(){cur.classList.add('grow');});
+  el.addEventListener('mouseleave',function(){cur.classList.remove('grow');});
+});
+document.addEventListener('mouseleave',function(){cur.classList.add('hidden');});
+document.addEventListener('mouseenter',function(){cur.classList.remove('hidden');});
+
+/* scroll reveal */
+var io=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('visible');});
+},{threshold:.07});
+document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
+
+/* TOC active */
+var secs = document.querySelectorAll('[id]');
+var tocLinks = document.querySelectorAll('.toc a');
+var ioToc = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(e.isIntersecting){
+      var id=e.target.getAttribute('id');
+      tocLinks.forEach(function(a){
+        a.classList.toggle('active', a.getAttribute('data-sec')===id);
+      });
+    }
+  });
+},{rootMargin:'-40% 0px -55% 0px'});
+secs.forEach(function(s){ioToc.observe(s);});
+</script>
+</body>
+</html>
