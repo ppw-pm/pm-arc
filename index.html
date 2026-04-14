@@ -33,21 +33,20 @@ body {
 }
 
 /* ── Custom cursor ─────────────────────────────── */
-#cursor {
-  position: fixed;
-  width: 10px; height: 10px;
-  background: var(--ink);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9999;
-  transform: translate(-50%,-50%);
-  transition: width .25s, height .25s, background .25s, opacity .15s;
-  mix-blend-mode: multiply;
-}
-#cursor.grow {
-  width: 48px; height: 48px;
-  background: var(--accent);
-}
+#cursor { 
+  position:fixed; 
+  width:10px; 
+  height:10px; 
+  background:var(--ink); 
+  border-radius:50%; 
+  pointer-events:none; 
+  z-index:9999; 
+  transform:translate(-50%,-50%); 
+  transition:width .25s, height .25s, background .25s, opacity .15s; 
+        }
+#cursor.grow { width:48px; height:48px; background:var(--accent); }
+#cursor.light { background: #f0ede6; }
+#cursor.light.grow { background: var(--accent); }
 #cursor.hidden { opacity:0; }
 
 /* ── Nav ───────────────────────────────────────── */
@@ -889,9 +888,7 @@ footer {
     <li class="project-item reveal reveal-d1"
         data-title="The Break Room"
         data-tag="Product Design · Web App">
-      <a class="project-link"
-         href="thebreakroom.html"
-         target="_blank">
+      <a class="project-link" href="thebreakroom.html" target="_blank">
         <span class="proj-num">001</span>
         <div class="proj-info">
           <div class="proj-tags">
@@ -924,18 +921,18 @@ footer {
     </li>
 
     <li class="project-item reveal reveal-d3"
-        data-title="Behance"
-        data-tag="UI · Visual Design">
+        data-title="Pomomelto"
+        data-tag="UI · Product Design">
       <a class="project-link"
-         href="https://www.behance.net/pornpawee-manyuen"
+         href="pomomelto.html"
          target="_blank">
         <span class="proj-num">003</span>
         <div class="proj-info">
           <div class="proj-tags">
             <span class="proj-tag">UI Design</span>
-            <span class="proj-tag">Visual Design</span>
+            <span class="proj-tag">Product Design</span>
           </div>
-          <div class="proj-name">More on Behance</div>
+          <div class="proj-name">Pomomelto</div>
           <p class="proj-desc">UI-focused work — interfaces, visual design, and product explorations.</p>
         </div>
         <span class="proj-arrow">↗</span>
