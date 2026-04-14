@@ -965,12 +965,7 @@ footer {
       <div class="mw-ingredients" id="mwShelf"></div>
 
       <div class="mw-mortar-row">
-        <pre class="mw-ascii" id="mwAscii">   ____
-  /    \
- / ____ \
-| |    | |
-|_|____|_|
-  \____/</pre>
+       <img id="mwMortar" src="portfolio-favicon.png" alt="Mortar & Pestle" class="mw-mortar">
         <div class="mw-log" id="mwLog">
           <div class="mw-log-line" style="color:var(--muted);font-style:italic;">// mortar is empty — add ingredients above</div>
         </div>
@@ -1199,15 +1194,14 @@ setTimeout(function(){
     }
   ];
 
-  var added = [], ground = false, NEEDED = 4;
-  var ascii  = document.getElementById('mwAscii');
+var added = [], ground = false, NEEDED = 4;
+  var mwMortar = document.getElementById('mwMortar');
   var log    = document.getElementById('mwLog');
   var fill   = document.getElementById('mwFill');
   var count  = document.getElementById('mwCount');
   var result = document.getElementById('mwResult');
   var resetBtn = document.getElementById('mwReset');
   var shelf  = document.getElementById('mwShelf');
-
   function buildShelf(){
     shelf.innerHTML = '';
     INGREDIENTS.forEach(function(ing){
@@ -1218,7 +1212,6 @@ setTimeout(function(){
       shelf.appendChild(el);
     });
   }
-
   function addIng(ing, el){
     if(added.includes(ing.name) || ground) return;
     added.push(ing.name);
@@ -1228,27 +1221,24 @@ setTimeout(function(){
     line.className = 'mw-log-line';
     line.innerHTML = '<span class="plus">+</span>' + ing.thai + ' (' + ing.name + ')';
     log.appendChild(line);
-    if(added.length >= 1) ascii.classList.add('active');
+    if(added.length >= 1) mwMortar.classList.add('active');
     fill.style.width = Math.min(added.length / NEEDED * 100, 100) + '%';
     count.textContent = added.length + ' / ' + NEEDED + ' ingredients';
     if(added.length >= NEEDED) grind();
   }
-
   function grind(){
     ground = true;
-    ascii.className = 'mw-ascii grinding';
-    ascii.textContent = '   ~~~~\n  / ~~~~ \\\n / ~pestle ~\\\n| | grind | |\n|_|~~~~~~~~|\n  \\~~~~~/';
+    mwMortar.className = 'mw-mortar grinding';
     fill.classList.add('done');
     count.textContent = 'grinding…';
     setTimeout(function(){
-      ascii.textContent = '   ____\n  / ░░░░ \\\n / ░paste░ \\\n| |  ✓   | |\n|_|______|\n  \\____/';
+      mwMortar.className = 'mw-mortar done';
       count.textContent = 'done ✓';
       var recipe = RECIPES.find(function(r){ return r.needs && r.needs.every(function(n){ return added.includes(n); }); }) || RECIPES[RECIPES.length-1];
       showResult(recipe);
       resetBtn.classList.add('show');
     }, 900);
   }
-
   function showResult(recipe){
     var html = '<div class="mw-result-comment">// ' + recipe.title + '</div>';
     recipe.lines.forEach(function(line){
@@ -1261,19 +1251,16 @@ setTimeout(function(){
     result.innerHTML = html;
     result.classList.add('show');
   }
-
   window.mwReset = function(){
     added = []; ground = false;
     fill.style.width = '0%'; fill.classList.remove('done');
     count.textContent = '0 / 4 ingredients';
-    ascii.className = 'mw-ascii';
-    ascii.textContent = '   ____\n  /    \\\n / ____ \\\n| |    | |\n|_|____|_|\n  \\____/';
+    mwMortar.className = 'mw-mortar';
     log.innerHTML = '<div class="mw-log-line" style="color:var(--muted);font-style:italic;">// mortar is empty — add ingredients above</div>';
     result.innerHTML = ''; result.classList.remove('show');
     resetBtn.classList.remove('show');
     buildShelf();
   };
-
   buildShelf();
 })();
 </script>
