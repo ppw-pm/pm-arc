@@ -402,7 +402,7 @@ footer { background:var(--ink); padding:80px 48px 48px; color:var(--bg); }
 <div class="case-body">
 
   <!-- 01 Context -->
-  <section class="case-section reveal">
+  <section class="case-section reveal" id="context">
     <div class="section-label"><span class="num">01</span> Context &amp; Inspiration</div>
     <div class="two-col">
       <div>
@@ -440,7 +440,7 @@ footer { background:var(--ink); padding:80px 48px 48px; color:var(--bg); }
   </section>
 
   <!-- 02 Problem Space -->
-  <section class="case-section reveal">
+  <section class="case-section reveal" id="problem">
     <div class="section-label"><span class="num">02</span> The Problem Space</div>
     <h2 class="section-heading">Three observed<br><em>behavioural patterns.</em></h2>
     <p class="body-text" style="margin-bottom:40px;">While there was no formal research phase, the design brief came from three observed patterns that kept surfacing in conversations around me.</p>
@@ -473,7 +473,7 @@ footer { background:var(--ink); padding:80px 48px 48px; color:var(--bg); }
   </section>
 
   <!-- 03 Features -->
-  <section class="case-section reveal">
+  <section class="case-section reveal" id="features">
     <div class="section-label"><span class="num">03</span> Features</div>
     <h2 class="section-heading">Three features, one<br><em>emotional arc.</em></h2>
     <p class="body-text" style="margin-bottom:56px;">Each feature solves one of the three patterns — and each is usable in under 30 seconds with no account required. Release → Express → Connect.</p>
@@ -609,7 +609,7 @@ footer { background:var(--ink); padding:80px 48px 48px; color:var(--bg); }
   </section>
 
   <!-- 04 Process -->
-  <section class="case-section reveal">
+  <section class="case-section reveal" id="process">
     <div class="section-label"><span class="num">04</span> Design Process</div>
     <h2 class="section-heading">2.5 hours,<br><em>four stages.</em></h2>
     <div class="timeline" style="margin-top:40px;">
@@ -669,7 +669,7 @@ footer { background:var(--ink); padding:80px 48px 48px; color:var(--bg); }
   </section>
 
   <!-- 05 Design System -->
-  <section class="case-section reveal">
+  <section class="case-section reveal" id="design">
     <div class="section-label"><span class="num">05</span> Design System</div>
     <h2 class="section-heading">Colour, type,<br><em>and pixels.</em></h2>
 
@@ -708,7 +708,7 @@ footer { background:var(--ink); padding:80px 48px 48px; color:var(--bg); }
   </section>
 
   <!-- 06 Future -->
-  <section class="case-section reveal">
+  <section class="case-section reveal" id="future">
     <div class="section-label"><span class="num">06</span> Future Features</div>
     <h2 class="section-heading">From outlet to<br><em>daily habit.</em></h2>
     <p class="body-text" style="margin-bottom:40px;">The hackathon was just the beginning. With a registered user layer, these features would turn Break Room from a one-time release valve into a daily wellbeing ritual.</p>
@@ -737,7 +737,7 @@ footer { background:var(--ink); padding:80px 48px 48px; color:var(--bg); }
   </section>
 
   <!-- 07 Reflection -->
-  <section class="case-section reveal">
+  <section class="case-section reveal" id="reflection">
     <div class="section-label"><span class="num">07</span> Reflection</div>
     <h2 class="section-heading">What worked,<br><em>what's next.</em></h2>
     <div class="reflection-grid" style="margin-top:40px;">
@@ -796,6 +796,20 @@ var io = new IntersectionObserver(function(entries){
   entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('visible');});
 },{threshold:.08});
 document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
+
+var secs = document.querySelectorAll('[id]');
+var tocLinks = document.querySelectorAll('.toc a');
+var ioToc = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(e.isIntersecting){
+      var id = e.target.getAttribute('id');
+      tocLinks.forEach(function(a){
+        a.classList.toggle('active', a.getAttribute('data-sec')===id);
+      });
+    }
+  });
+},{rootMargin:'-40% 0px -55% 0px'});
+secs.forEach(function(s){ ioToc.observe(s); }); 
 </script>
 </body>
 </html>
