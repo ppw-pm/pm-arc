@@ -710,17 +710,29 @@ footer {
   align-items: flex-start;
   margin-bottom: 24px;
 }
-.mw-ascii {
-  font-family: var(--mono);
-  font-size: 11px;
-  line-height: 1.5;
-  color: var(--muted);
-  white-space: pre;
+  
+.mw-mortar {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  display: block;
   flex-shrink: 0;
-  transition: color .4s;
+  transition: transform .3s;
 }
-.mw-ascii.active { color: var(--ink); }
-.mw-ascii.grinding { color: var(--accent); }
+.mw-mortar.active {
+  filter: drop-shadow(0 0 6px rgba(200,80,26,0.2));
+}
+.mw-mortar.grinding {
+  animation: mortarRock .35s ease-in-out infinite alternate;
+  filter: drop-shadow(0 0 12px rgba(200,80,26,0.4));
+}
+.mw-mortar.done {
+  filter: drop-shadow(0 0 8px rgba(200,80,26,0.3));
+}
+@keyframes mortarRock {
+  from { transform: rotate(-5deg); }
+  to   { transform: rotate(5deg); }
+}
 
 .mw-log {
   flex: 1;
