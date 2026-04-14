@@ -842,10 +842,7 @@ footer {
 
 <!-- Floating hover image -->
 <div class="hover-img" id="hoverImg">
-  <div class="img-placeholder" id="hoverPlaceholder">
-    <span class="ph-title" id="hoverTitle"></span>
-    <span class="ph-tag" id="hoverTag"></span>
-  </div>
+  <img id="hoverImgEl" src="" alt="" style="width:100%;height:100%;object-fit:cover;display:block;">
 </div>
 
 <!-- Nav -->
@@ -900,7 +897,8 @@ footer {
 
     <li class="project-item reveal reveal-d1"
         data-title="The Break Room"
-        data-tag="Product Design · Web App">
+        data-tag="Product Design · Web App"
+        data-img="preview-breakroom.png">
       <a class="project-link" href="thebreakroom.html" target="_blank">
         <span class="proj-num">001</span>
         <div class="proj-info">
@@ -917,7 +915,8 @@ footer {
 
     <li class="project-item reveal reveal-d2"
         data-title="KitchenMate"
-        data-tag="UX Design · UX Writing">
+        data-tag="UX Design · UX Writing"
+        data-img="preview-kitchenmate.png">
       <a class="project-link" href="kitchenmate.html" target="_blank">
         <span class="proj-num">002</span>
         <div class="proj-info">
@@ -935,7 +934,8 @@ footer {
 
     <li class="project-item reveal reveal-d3"
         data-title="Pomomelto"
-        data-tag="UI · Product Design">
+        data-tag="UI · Product Design"
+        data-img="preview-pomomelto.png">
       <a class="project-link"
          href="pomomelto.html"
          target="_blank">
@@ -1096,6 +1096,7 @@ document.querySelectorAll('.project-item').forEach(function(item){
   item.addEventListener('mouseenter',function(e){
     hoverTitle.textContent = item.dataset.title || '';
     hoverTag.textContent   = item.dataset.tag   || '';
+    document.getElementById('hoverImgEl').src = item.dataset.img || '';
     hoverImg.classList.add('visible');
     hactive=true;
   });
