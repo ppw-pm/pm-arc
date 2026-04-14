@@ -292,7 +292,7 @@ footer { background:var(--ink); padding:80px 48px 48px; color:var(--bg); }
 <div class="case-body">
 
   <!-- Overview -->
-  <section class="case-section reveal">
+  <section class="case-section reveal" id="overview">
     <div class="section-label"><span class="num">00</span> Overview</div>
     <div class="two-col">
       <div>
@@ -318,7 +318,7 @@ footer { background:var(--ink); padding:80px 48px 48px; color:var(--bg); }
   </section>
 
   <!-- 01 Research -->
-  <section class="case-section reveal">
+  <section class="case-section reveal" id="research">
     <div class="section-label"><span class="num">01</span> User Research</div>
     <h2 class="section-heading">10 interviews.<br><em>4 clear patterns.</em></h2>
     <p class="body-text" style="margin-bottom:40px;">Two weeks of semi-structured interviews and naturalistic observation. Interviews covered lifestyle, diet, grocery habits, environmental awareness, and kitchen behaviour. Six naturalistic observations captured real meal prep and grocery shopping in context.</p>
@@ -363,7 +363,7 @@ footer { background:var(--ink); padding:80px 48px 48px; color:var(--bg); }
   </section>
 
   <!-- 02 Personas -->
-  <section class="case-section reveal">
+  <section class="case-section reveal" id="personas">
     <div class="section-label"><span class="num">02</span> Synthesis &amp; Personas</div>
     <h2 class="section-heading">Three archetypes,<br><em>one product.</em></h2>
     <p class="body-text" style="margin-bottom:8px;">Affinity mapping organised findings into clusters. Aggregated empathy mapping then segmented users by shared behaviour, surfacing three archetypes — each shaped by a primary constraint.</p>
@@ -394,7 +394,7 @@ footer { background:var(--ink); padding:80px 48px 48px; color:var(--bg); }
   </section>
 
   <!-- 03 Design Process -->
-  <section class="case-section reveal">
+  <section class="case-section reveal" id="process">
     <div class="section-label"><span class="num">03</span> Design Process</div>
     <h2 class="section-heading">Concept to<br><em>high-fidelity.</em></h2>
 
@@ -465,7 +465,7 @@ footer { background:var(--ink); padding:80px 48px 48px; color:var(--bg); }
   </section>
 
   <!-- 04 Final Design -->
-  <section class="case-section reveal">
+  <section class="case-section reveal" id="design">
     <div class="section-label"><span class="num">04</span> Final Design</div>
     <h2 class="section-heading">Three features,<br><em>one home screen.</em></h2>
     <p class="body-text" style="margin-bottom:40px;">KitchenMate addresses all four pain points through three core features — each surfaced in context without adding friction. The home dashboard is the command centre.</p>
@@ -552,7 +552,7 @@ footer { background:var(--ink); padding:80px 48px 48px; color:var(--bg); }
   </section>
 
   <!-- 05 Reflection -->
-  <section class="case-section reveal">
+  <section class="case-section reveal" id="reflection">
     <div class="section-label"><span class="num">05</span> Retrospective</div>
     <h2 class="section-heading">Strengths &amp;<br><em>areas for growth.</em></h2>
     <div class="reflection-grid" style="margin-top:40px;">
@@ -616,6 +616,20 @@ var io = new IntersectionObserver(function(entries){
   entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('visible');});
 },{threshold:.08});
 document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
+
+var secs = document.querySelectorAll('[id]');
+var tocLinks = document.querySelectorAll('.toc a');
+var ioToc = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(e.isIntersecting){
+      var id = e.target.getAttribute('id');
+      tocLinks.forEach(function(a){
+        a.classList.toggle('active', a.getAttribute('data-sec')===id);
+      });
+    }
+  });
+},{rootMargin:'-40% 0px -55% 0px'});
+secs.forEach(function(s){ ioToc.observe(s); });
 </script>
 </body>
 </html>
