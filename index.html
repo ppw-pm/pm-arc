@@ -1058,21 +1058,24 @@ footer {
 
 <script>
 /* ── Cursor ── */
-var cur = document.getElementById('cursor');
-var mx=0,my=0, cx=0,cy=0;
+var cur=document.getElementById('cursor');
+var mx=0,my=0,cx=0,cy=0;
 document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;});
 function lerp(a,b,t){return a+(b-a)*t;}
-(function animCursor(){
-  cx=lerp(cx,mx,.18); cy=lerp(cy,my,.18);
-  cur.style.left=cx+'px'; cur.style.top=cy+'px';
-  requestAnimationFrame(animCursor);
-})();
-document.querySelectorAll('a, button, .skill').forEach(function(el){
+(function tick(){cx=lerp(cx,mx,.18);cy=lerp(cy,my,.18);cur.style.left=cx+'px';cur.style.top=cy+'px';requestAnimationFrame(tick);})();
+
+/* grow on interactive elements */
+document.querySelectorAll('a,button').forEach(function(el){
   el.addEventListener('mouseenter',function(){cur.classList.add('grow');});
   el.addEventListener('mouseleave',function(){cur.classList.remove('grow');});
 });
 document.addEventListener('mouseleave',function(){cur.classList.add('hidden');});
 document.addEventListener('mouseenter',function(){cur.classList.remove('hidden');});
+
+/* flip cursor light on dark footer */
+var footer = document.querySelector('footer');
+footer.addEventListener('mouseenter', function(){ cur.classList.add('light'); });
+footer.addEventListener('mouseleave', function(){ cur.classList.remove('light'); });
 
 /* ── Hover floating image ── */
 var hoverImg  = document.getElementById('hoverImg');
