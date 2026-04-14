@@ -192,6 +192,46 @@ footer { background:var(--ink); padding:80px 48px 48px; color:var(--bg); }
   .brief-box{padding:28px 24px;flex-direction:column;gap:16px;}
   footer{padding:60px 24px 40px;}
 }
+
+/* TOC sidebar */
+.toc {
+  position: fixed;
+  left: 0; top: 0; bottom: 0;
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 0 0 40px;
+  z-index: 100;
+  pointer-events: none;
+}
+.toc a {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: rgba(15,14,11,.25);
+  letter-spacing: .08em;
+  text-decoration: none;
+  transition: color .25s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 0;
+  pointer-events: all;
+  line-height: 1.4;
+}
+.toc a::before {
+  content: '';
+  width: 20px; height: 1px;
+  background: currentColor;
+  display: inline-block;
+  flex-shrink: 0;
+  transition: width .25s;
+}
+.toc a:hover { color: rgba(15,14,11,.5); }
+.toc a.active { color: var(--accent); }
+.toc a.active::before { width: 32px; }
+@media(max-width:1100px){ .toc { display:none; } }
+  
 </style>
 </head>
 <body>
