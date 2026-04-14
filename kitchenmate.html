@@ -531,7 +531,7 @@ footer { background:var(--ink); padding:80px 48px 48px; color:var(--bg); }
     <div class="footer-big">Let's<br>work.</div>
     <div class="footer-cta">
       <span class="footer-cta-label">Next project</span>
-      <a href="thebreakroom.html" class="footer-btn">The Break Room →</a>
+      <a href="pomomelto.html" class="footer-btn">Pomomelo →</a>
     </div>
   </div>
   <div class="footer-bottom">
@@ -546,17 +546,22 @@ footer { background:var(--ink); padding:80px 48px 48px; color:var(--bg); }
 </footer>
 
 <script>
-var cur = document.getElementById('cursor');
+var cur=document.getElementById('cursor');
 var mx=0,my=0,cx=0,cy=0;
 document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;});
 function lerp(a,b,t){return a+(b-a)*t;}
 (function tick(){cx=lerp(cx,mx,.18);cy=lerp(cy,my,.18);cur.style.left=cx+'px';cur.style.top=cy+'px';requestAnimationFrame(tick);})();
+
 document.querySelectorAll('a,button').forEach(function(el){
   el.addEventListener('mouseenter',function(){cur.classList.add('grow');});
   el.addEventListener('mouseleave',function(){cur.classList.remove('grow');});
 });
 document.addEventListener('mouseleave',function(){cur.classList.add('hidden');});
 document.addEventListener('mouseenter',function(){cur.classList.remove('hidden');});
+
+var footer=document.querySelector('footer');
+footer.addEventListener('mouseenter',function(){cur.classList.add('light');});
+footer.addEventListener('mouseleave',function(){cur.classList.remove('light');});
 
 var io = new IntersectionObserver(function(entries){
   entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('visible');});
