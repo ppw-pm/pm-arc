@@ -24,8 +24,20 @@ html { font-size:16px; scroll-behavior:smooth; }
 }
 
 body { background:var(--bg); color:var(--ink); font-family:var(--sans); cursor:none; overflow-x:hidden; }
-#cursor { position:fixed; width:10px; height:10px; background:var(--ink); border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:width .25s,height .25s,background .25s,opacity .15s; mix-blend-mode:multiply; }
+#cursor { 
+  position:fixed; 
+  width:10px; 
+  height:10px; 
+  background:var(--ink); 
+  border-radius:50%; 
+  pointer-events:none; 
+  z-index:9999; 
+  transform:translate(-50%,-50%); 
+  transition:width .25s, height .25s, background .25s, opacity .15s; 
+        }
 #cursor.grow { width:48px; height:48px; background:var(--accent); }
+#cursor.light { background: #f0ede6; }
+#cursor.light.grow { background: var(--accent); }
 #cursor.hidden { opacity:0; }
 
 nav { position:fixed; top:0; left:0; right:0; z-index:500; display:flex; justify-content:space-between; align-items:center; padding:28px 48px; mix-blend-mode:multiply; }
